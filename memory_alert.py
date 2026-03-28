@@ -36,9 +36,9 @@ try:
     status="内存告急" if is_low else "内存充足"
 
     report=f"""
-    {"="*40}
-    {now} [Memory_Check] Status: {status} | Available: {available_mem}
-    {"="*40}\n
+{"="*40}
+{now} [Memory_Check] Status: {status} | Available: {available_mem}
+{"="*40}\n
     """
 
     #在兼顾性能与安全的情况下,将当前冗余内存及状态写入日志文件

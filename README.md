@@ -19,9 +19,13 @@
 
 ## 投喂清单 (正在学习的内容)
 [x] Git 基础： 已经学会写漂亮的 feat(scope) 提交消息，不再乱发消息了喵！
+
 [x] Python 自动化： 完成了 memory_alert_v2.py 及其函数化改造。
+
 [x] 日志轮转： 调教好了 log_rotator.py，实现 3KB 自动切分备份。
+
 [ ] 终极合体： 正在闭关修炼 sre_monitor_v1.py（
+
 [ ] Linux 魔法： 计划探索 Crontab 自动任务，让脚本自己跑起来 >~<
 
 ---

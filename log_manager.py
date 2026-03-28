@@ -11,19 +11,26 @@ base_dir=os.path.join(os.getcwd(),"logs")
 #若文件不存在则创建一个并写入当前时间
 file_name="health.log"
 full_f_name=os.path.join(base_dir,"health.log")
-time=datetime.now()
-if not os.path.exists(full_f_name) :
-    with open(full_f_name,"w") as f :
-        f.write(f"health.log has been created just now   --- {time}\n")
-        f.write(f"System Check: OK   --- {time}\n")
-else :
-    with open(full_f_name,"a") as f :
-        f.write(f"System Check: OK   --- {time}\n")
 
-#打印 health.log 文件大小
-log_info=os.stat(full_f_name)
-print(f"health.log: {log_info.st_size} 字节")
+# 方法：检查文件是否存在，若不存在则创建文件
+def check_Log_Exist():
+    time=datetime.now()
+    if not os.path.exists(full_f_name) :
+        with open(full_f_name,"w") as f :
+            f.write(f"health.log has been created just now   --- {time}\n")
+    else :
+        with open(full_f_name,"a") as f :
+            f.write(f"System Check: OK   --- {time}\n")
 
+# 方法：打印health.log文件大小
+def get_Log_Size():
+    log_info=os.stat(full_f_name)
+    print(f"health.log: {log_info.st_size} 字节")
+
+if __name__=="__main__":
+    check_Log_Exist()
+    get_Log_Size()
+    
 #读取文件内容并打印，确认写入成功
 with open(full_f_name,"r") as f :
     content=f.read()

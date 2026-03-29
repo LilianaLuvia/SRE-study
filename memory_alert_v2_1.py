@@ -36,10 +36,10 @@ def get_memory_info():
         return None,None
 
 #写入日志及检查日志文件大小
-def write_to_log(report_content):
+def write_to_log(report_content,log_path):
     try:
         #环境检查
-        os.makedirs(base_path,exist_ok=True)
+        os.makedirs(os.path.dirname(log_path),exist_ok=True)
         
         #在兼顾性能与安全的情况下,将当前冗余内存及状态写入日志文件
         with open(log_path,'a') as f:

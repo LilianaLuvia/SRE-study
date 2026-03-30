@@ -3,18 +3,19 @@ import subprocess
 from datetime import datetime
 from modules import logger
 from modules import memory
+import traceback
 
 #配置环境变量
 base_dir=os.getcwd()
 log_dir=os.path.join(base_dir,"logs","health.log")
-MAX_SIZE=10*1024
 FINAL=False
 
 #检查logs文件是否存在
 os.makedirs(os.path.join(base_dir,"logs"),exist_ok=True)
 
 #方法：完整冗余内存监控
-def monitor_memory(log_dir,MAX_SIZE):
+def monitor_memory(log_dir):
+    MAX_SIZE=20*1024
     try:
         print("[@] 正在进行 [Log_Rorator] ")
         #调用轮转函数，并接收返回值，输出轮转情况
@@ -31,10 +32,10 @@ def monitor_memory(log_dir,MAX_SIZE):
             print("[@] [Log_Rorator] 程序发生未知异常 \n")
             return False,None,None
         
-    except Exception as e:
-        print("** 发生未知异常！**")
+    except Exception:
+        traceback.print_exc()
         return False,None,None
 
 #主程序运行
 if __name__=="__main__":
-    monitor_memory(log_dir,MAX_SIZE)    
+    monitor_memory(log_dir)    

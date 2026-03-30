@@ -7,6 +7,15 @@ from datetime import datetime
 base_dir=os.path.join(os.getcwd(),"logs")
 log_dir=os.path.join(base_dir,"health.log")
 
+#方法：数据清洗，清除"Gi"、"Mi"
+def parse_to_mb(available_mem):
+    if "Gi" in available_mem:
+        return float(available_mem.replace("Gi","")),"Gi"
+    elif "Mi" in available_mem:
+        return float(available_mem.replace("Mi","")),"Mi"
+    else:
+        return 0.0,None
+    
 #方法：查看内存冗余及内存状态,并写入日志
 def get_memory_info(log_dir):
     try:
@@ -30,13 +39,11 @@ def get_memory_info(log_dir):
         available_mem=parts[6]
 
         #逻辑判断内存
-        if "Gi" in available_mem:
-            is_low=False
-        elif "Mi" in available_mem:
-            mem=int(available_mem.replace("Mi",""))
-            is_low=mem<100
-        else:
+        mem,unit=parse_to_mb(available_mem)
+        if mem<100:
             is_low=True
+        else:
+            is_low=False
         
         status="内存告急" if is_low else "内存充足"
         

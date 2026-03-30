@@ -7,7 +7,7 @@ from datetime import datetime
 base_dir=os.path.join(os.getcwd(),"logs")
 log_dir=os.path.join(base_dir,"health.log")
 
-#查看内存冗余及内存状态,并写入日志
+#方法：查看内存冗余及内存状态,并写入日志
 def get_memory_info(log_dir):
     try:
         

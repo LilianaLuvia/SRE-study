@@ -12,21 +12,31 @@ mem_lst=[]
 MAX_SIZE=10*1024
 
 def cron_manager(log_dir):
+    #定义性能画像变量及统计变量
+    avg_mem = 0.0
+    highest_mem = 0.0
+    lowest_mem = 0.0
     count=0
     error_count=0
+    
+    #定义返回值字典
+    result={
+        "success":False,
+        "Status":None,
+        "Available_Mem":None,
+        "Usage%":None
+        }
+    
     try:
         while count<10:
             if error_count<3:
                 try:
                     now=datetime.now().strftime("%H:%M:%S")
                     print(f"[{now}] 正在进行第 {count+1} 次循环")
-                    success_info,status,available_mem=sre_monitor_v1_3.monitor_memory(log_dir)
+                    result=sre_monitor_v1_3.monitor_memory(log_dir)
                     count+=1
-                    if not success_info==False:
-                        mem,unit=memory.parse_to_mb(available_mem)
-                        if unit=="Gi":
-                            mem*=1024
-                        mem_lst.append(mem)
+                    if result.get("success"):
+                        mem_lst.append(result.get("Available_Mem",0))
                         error_count=0
                     
                 except Exception:
@@ -46,7 +56,7 @@ def cron_manager(log_dir):
         print("** 发生未知错误 **")
         traceback.print_exc()
 
-    finally:
+    finally: 
         try:
             total_mem=sum(mem_lst)
             highest_mem=max(mem_lst)
@@ -66,7 +76,7 @@ def cron_manager(log_dir):
 平均可用内存：{avg_mem:.2f} Mi
 内存波峰：{highest_mem} Mi
 内存波谷：{lowest_mem} Mi
-{"-"*10} ----------- {"-"*10}
+{"-"*10} ------------ {"-"*10}
 """
         
         print(f"** 本次程序已结束 **")

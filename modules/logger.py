@@ -4,6 +4,7 @@ from datetime import datetime
 #定义环境变量
 base_dir=os.getcwd()
 log_dir=os.path.join(base_dir,"logs","health.log")
+MAX_SIZE=10*1024
 
 # 方法：检查logs文件夹或日志文件是否存在，若不存在则创建logs文件夹或日志文件
 def check_log_exist():
@@ -32,6 +33,13 @@ def get_log_size():
     
 #方法：备份日志文件
 def rotate_log(log_dir,MAX_SIZE):
+    
+    #定义返回值字典
+    result={
+        "success":None,
+        "Status":None,
+        "Backup_Log":None
+    }
     try:
         
         #检查父目录是否存在
@@ -49,27 +57,42 @@ def rotate_log(log_dir,MAX_SIZE):
                 #执行os.rename生成备份日志名
                 backup_log=f"{log_dir}.{timestamp}.bak"
                 os.rename(log_dir,backup_log)
-                return f"日志已完成备份：{backup_log}",True,backup_log
+                result.update({
+                    "success":True,
+                    "Status":f"日志已完成备份：{backup_log}",
+                    "Backup_Log":backup_log
+                })
+                return result
             else:
                 size=os.path.getsize(log_dir)
                 print(f"文件未超出 {MAX_SIZE} ，当前文件大小：{size} 字节")
-                return "** 本次日志备份已跳过 **","Skipped",None
+                result.update({
+                    "success":"Skipped",
+                    "Status":f"本次日志备份已跳过，当前文件大小：{size} 字节",
+                    "Backup_Log":None
+                })
+                return result
                 
         else:
             print("日志文件不存在，已自动创建日志")
             with open(log_dir,'w') as f:
                 f.write(f"health.log has been created just now   --- {now}\n")
-            return "日志文件首次创建，已初始化日志","Initialized",None
+                result.update({
+                    "success":"Initialized",
+                    "Status":"日志文件首次创建，已初始化日志",
+                    "Backup_Log":None
+                })
+            return "Initialized","日志文件首次创建，已初始化日志",None
                 
     except Exception as e:
         print(f"** 发生异常错误：{e} **")
-        return "日志未能正常备份",False,None
+        return False,"日志未能正常备份",None
 
 if __name__=="__main__":
     
     check_log_exist()
     get_log_size()
-    val_status,status,backup_log=rotate_log(log_dir)
+    val_status,status,backup_log=rotate_log(log_dir,MAX_SIZE)
     
     #运行成功则返回备份日志地址
     if status is True:

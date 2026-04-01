@@ -1,8 +1,8 @@
 import os
 import subprocess
 from datetime import datetime
-from modules import logger
-from modules import memory
+from modules import log_utils
+from modules import memory_utils
 import traceback
 
 #配置环境变量
@@ -29,14 +29,14 @@ def monitor_memory(log_dir):
         print("[@] 正在进行 [Log_Rorator] ")
         
         #调用轮转函数，并接收返回值，输出轮转情况
-        val_status,log_status,backup_log=logger.rotate_log(log_dir,MAX_SIZE)
+        val_status,log_status,backup_log=log_utils.rotate_log(log_dir,MAX_SIZE)
         print(f"{val_status}\n")
         
         #备份程序完成，则进入下一步程序
         #调用内存检查函数，抓取系统当前的 available 内存数值
         if log_status is not False:
             print("[@] 正在进行 [Memory_Check] ")
-            result.update(memory.get_memory_info(log_dir))
+            result.update(memory_utils.get_memory_info(log_dir))
             return result
         else:
             print("[@] [Log_Rorator] 程序发生未知异常 \n")

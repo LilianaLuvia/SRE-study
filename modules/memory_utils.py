@@ -96,7 +96,11 @@ Status: {status} | Available: {available_mem} Mi | Usage%: {usage_percent:.2f}%\
             
             #将数据计入字典，程序运行返回数据以字典形式作返回值,以便后续分析使用
             result.update({
+<<<<<<< HEAD
                     "Success":True,
+=======
+                    "success":True,
+>>>>>>> d60d60e26dde16074b6e93b13c5ca48173e82034
                     "Status":f"{status}",
                     "Available_Mem":available_mem,
                     "Usage%":f"{usage_percent:.2f}%"

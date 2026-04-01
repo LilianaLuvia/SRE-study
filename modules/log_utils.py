@@ -1,0 +1,134 @@
+import os
+from datetime import datetime
+import traceback
+
+#定义环境变量
+base_dir=os.getcwd()
+log_dir=os.path.join(base_dir,"logs")
+log_path=os.path.join(log_dir,"health.log")
+MAX_SIZE=20*1024
+
+# 方法：检查logs文件夹或日志文件是否存在，若不存在则创建logs文件夹或日志文件
+def check_log_exist():
+    result={
+        "Success":False,
+        "Log_Path":None
+    }
+    try:
+        now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        base_dir=os.getcwd()
+        log_path=os.path.join(base_dir,"logs",'health.log')
+        os.makedirs(os.path.dirname(log_path),exist_ok=True)
+        
+        
+        
+        if os.path.exists(log_dir) :
+            report=f"""
+{"="*50}
+{now} [@] [Check_Log_Exist] 
+Check: OK
+{"="*50}\n
+                    """
+            with open(log_path,"a") as f :
+                f.write(report)
+            
+        else :
+            with open(log_path,"w") as f :
+                f.write(f"health.log has been created just now   --- {now}\n\n")
+        result.update(
+            {"Success":True,
+             "Log_Path":f"{log_path}"
+             })
+        return result
+    except Exception:
+        traceback.print_exc()
+        return result
+    
+
+# 方法：打印日志文件大小
+def get_log_size(log_path):
+    log_info=os.stat(log_path)
+    print(f"health.log: {log_info.st_size} 字节")
+    
+#方法：将信息写入日志文件
+def write_to_log(info):
+    result=check_log_exist()
+    if  result.get("Success",False):
+        with open(result.get("Log_Path"),'a') as f:
+            f.write(info)
+    else:
+        print("** 写入失败 **")
+    
+#方法：备份日志文件
+def rotate_log(log_path,MAX_SIZE):
+    
+    #定义返回值字典
+    result={
+        "Success":None,
+        "Status":"日志未能正常备份",
+        "Backup_Log":None
+    }
+    try:
+        
+        #检查父目录是否存在
+        os.makedirs(os.path.dirname(log_path),exist_ok=True)
+        
+        now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        if os.path.exists(log_path):
+            
+            #判断文件是否大于 MAX_SIZE 字节
+            if os.path.getsize(log_path)>MAX_SIZE:
+                print(f"** 日志文件已大于 {MAX_SIZE} 字节，准备进行轮转 **")
+                timestamp=datetime.now().strftime("%Y%m%d-%H%M%S")
+                
+                #执行os.rename生成备份日志名
+                backup_log=f"{log_path}.{timestamp}.bak"
+                os.rename(log_path,backup_log)
+                result.update({
+                    "Success":True,
+                    "Status":f"日志已完成备份：{backup_log}",
+                    "Backup_Log":backup_log
+                })
+                return result
+            else:
+                size=os.path.getsize(log_path)
+                print(f"文件未超出 {MAX_SIZE} ，当前文件大小：{size} 字节")
+                result.update({
+                    "Success":"Skipped",
+                    "Status":f"本次日志备份已跳过，当前文件大小：{size} 字节",
+                    "Backup_Log":None
+                })
+                return result
+                
+        else:
+            print("日志文件不存在，已自动创建日志")
+            with open(log_path,'w') as f:
+                f.write(f"health.log has been created just now   --- {now}\n")
+                result.update({
+                    "Success":"Initialized",
+                    "Status":"日志文件首次创建，已初始化日志",
+                    "Backup_Log":None
+                })
+            return result
+                
+    except Exception as e:
+        print(f"** 发生异常错误：{e} **")
+        return result
+
+if __name__=="__main__":
+    
+    check_log_exist()
+    get_log_size(log_path)
+    result=rotate_log(log_path,MAX_SIZE)
+    
+    #运行成功则返回备份日志地址
+    if result.get("Success") is True:
+        print(f"日志已完成备份：{result.get("Backup_Log")}")
+    elif result.get("Success")=="Skipped":
+        print("** 本次日志备份已跳过 **")
+    elif result.get("Success")=="Initialized":
+        print("日志文件首次创建，已初始化日志")
+    else:
+        print("日志未能正常备份")

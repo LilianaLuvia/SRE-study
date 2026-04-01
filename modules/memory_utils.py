@@ -75,7 +75,7 @@ def get_memory_info(log_dir):
         #在兼顾性能与安全的情况下,将当前冗余内存及状态写入日志文件
         report=f"""
 {"="*50}\n
-{now} [Memory_Check] 
+{now} [@] [Memory_Check] 
 Status: {status} | Available: {available_mem} Mi | Usage%: {usage_percent:.2f}%\n
 {"="*50}
                     """

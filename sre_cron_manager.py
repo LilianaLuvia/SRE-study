@@ -3,7 +3,7 @@ from datetime import datetime
 import os
 import time
 import traceback
-from modules import memory
+from modules import memory_utils
 
 #设置全局变量
 base_dir=os.getcwd()

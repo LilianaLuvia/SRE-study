@@ -1,4 +1,4 @@
-import sre_monitor_v1_3
+from modules import memory_utils
 from datetime import datetime
 import os
 import time
@@ -6,15 +6,12 @@ import traceback
 
 #设置全局变量
 base_dir=os.getcwd()
-log_dir=os.path.join(base_dir,"logs","health.log")
-mem_lst=[]
-MAX_SIZE=10*1024
+log_path=os.path.join(base_dir,"logs","health.log")
 
-def cron_manager(log_dir):
-    #定义性能画像变量及统计变量
-    avg_mem = 0.0
-    highest_mem = 0.0
-    lowest_mem = 0.0
+def cron_manager(log_path):
+    
+    #定义方法内变量
+    mem_lst=[]
     count=0
     error_count=0
     
@@ -30,9 +27,9 @@ def cron_manager(log_dir):
         while count<10:
             if error_count<3:
                 try:
-                    now=datetime.now().strftime("%H:%M:%S")
-                    print(f"[{now}] 正在进行第 {count+1} 次循环")
-                    result=sre_monitor_v1_3.monitor_memory(log_dir)
+                    now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    print(f"{now} 正在进行第 {count+1} 次循环")
+                    result=memory_utils.get_memory_info(log_path)
                     count+=1
                     if result.get("success"):
                         mem_lst.append(result.get("Available_Mem",0))
@@ -64,11 +61,8 @@ def cron_manager(log_dir):
                 avg_mem=total_mem/len(mem_lst)
             else:
                 avg_mem=0
-        except Exception:
-            print("** 出错了! **")
-            traceback.print_exc()
-        
-        final_report=f"""
+                
+            final_report=f"""
 {"-"*10} 性能画像报告 {"-"*10}
 总巡查次数：{count}
 有效样本数：{count-error_count}
@@ -77,12 +71,17 @@ def cron_manager(log_dir):
 内存波谷：{lowest_mem} Mi
 {"-"*10} ------------ {"-"*10}
 """
+        except Exception:
+            print("** 出错了! **")
+            traceback.print_exc()
+        
         
         print(f"** 本次程序已结束 **")
         print(f"** 共执行 {count} 次循环，发生 {error_count} 次错误 **")
         print(final_report)
-        return None
+        
+        return result
         
 #主程序运行
 if __name__=="__main__":
-    cron_manager(log_dir)
+    cron_manager(log_path)

@@ -80,7 +80,8 @@ def rotate_log(log_path,MAX_SIZE):
             
             #判断文件是否大于 MAX_SIZE 字节
             if os.path.getsize(log_path)>MAX_SIZE:
-                print(f"** 日志文件已大于 {MAX_SIZE} 字节，准备进行轮转 **")
+                print(f"""
+** 日志文件已大于 {MAX_SIZE} 字节，准备进行轮转 **""")
                 timestamp=datetime.now().strftime("%Y%m%d-%H%M%S")
                 
                 #执行os.rename生成备份日志名
@@ -97,13 +98,13 @@ def rotate_log(log_path,MAX_SIZE):
                 print(f"文件未超出 {MAX_SIZE} ，当前文件大小：{size} 字节")
                 result.update({
                     "Success":"Skipped",
-                    "Status":f"本次日志备份已跳过，当前文件大小：{size} 字节",
+                    "Status":f"本次日志备份已跳过",
                     "Backup_Log":None
                 })
                 return result
                 
         else:
-            print("日志文件不存在，已自动创建日志")
+            print("** 日志文件不存在，已自动创建日志 **")
             with open(log_path,'w') as f:
                 f.write(f"health.log has been created just now   --- {now}\n")
                 result.update({

@@ -2,7 +2,6 @@ import json
 import os
 import traceback
 from datetime import datetime
-from utils import json_utils
 
 json_path=os.path.join(os.getcwd(),"logs","memory_history.json")
 
@@ -12,7 +11,7 @@ def update_history(json_path,new_value,max_limit=10):
         
         #检查json文件存在与否,否则创建新的json
         if os.path.exists(json_path):
-            with open(json_path,'r') as f:      
+            with open(json_path,'r',encoding="UTF-8") as f:      
                 now_list=json.load(f)
         else:
             now_list=[]
@@ -29,7 +28,7 @@ def update_history(json_path,new_value,max_limit=10):
         
         #将列表写入Json
         with open(json_path,'w') as f:
-            json.dump(now_list,f,indent=4)
+            json.dump(now_list,f,indent=4,ensure_ascii=False)
         
         return True
     except Exception:

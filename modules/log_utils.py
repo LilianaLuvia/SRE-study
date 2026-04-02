@@ -1,67 +1,48 @@
 import os
 from datetime import datetime
-import traceback
 
 #定义环境变量
 base_dir=os.getcwd()
 log_dir=os.path.join(base_dir,"logs")
 log_path=os.path.join(log_dir,"health.log")
-MAX_SIZE=20*1024
 
-# 方法：检查logs文件夹或日志文件是否存在，若不存在则创建logs文件夹或日志文件
+# 方法：检查logs文件夹或日志文件是否存在
 def check_log_exist():
     result={
         "Success":False,
         "Log_Path":None
     }
-    try:
-        now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        
-        base_dir=os.getcwd()
-        log_path=os.path.join(base_dir,"logs",'health.log')
-        os.makedirs(os.path.dirname(log_path),exist_ok=True)
-        
-        
-        
-        if os.path.exists(log_dir) :
-            report=f"""
-{"="*50}
-{now} [@] [Check_Log_Exist] 
-Check: OK
-{"="*50}\n
-                    """
-            with open(log_path,"a") as f :
-                f.write(report)
-            
-        else :
-            with open(log_path,"w") as f :
-                f.write(f"health.log has been created just now   --- {now}\n\n")
-        result.update(
-            {"Success":True,
-             "Log_Path":f"{log_path}"
-             })
+    log_path=os.path.join(os.getcwd(),"logs","health.log")
+    if not os.path.exists(log_path):  
         return result
-    except Exception:
-        traceback.print_exc()
+    else :
+        result.update({
+            "Success":False,
+            "Log_path":None
+        })
         return result
     
-
 # 方法：打印日志文件大小
-def get_log_size(log_path):
-    log_info=os.stat(log_path)
-    print(f"health.log: {log_info.st_size} 字节")
+def get_log_size():
+    log_size=os.stat(log_path)
+    print(f"health.log: {log_size.st_size} 字节")
+    return log_size
     
 #方法：将信息写入日志文件
 def write_to_log(info):
+    now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    final_info=f"{now}\n{info}\n"
     result=check_log_exist()
-    if  result.get("Success",False):
+    if result.get("Success"):
         with open(result.get("Log_Path"),'a') as f:
-            f.write(info)
+            f.write(final_info)
+        return True
     else:
         print("** 写入失败 **")
+        return False
     
 #方法：备份日志文件
-def rotate_log(log_path,MAX_SIZE):
+def rotate_log(log_path,MAX_SIZE=50*1024):
     
     #定义返回值字典
     result={
@@ -69,11 +50,7 @@ def rotate_log(log_path,MAX_SIZE):
         "Status":"日志未能正常备份",
         "Backup_Log":None
     }
-    try:
-        
-        #检查父目录是否存在
-        os.makedirs(os.path.dirname(log_path),exist_ok=True)
-        
+    try:    
         now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         if os.path.exists(log_path):
@@ -121,8 +98,9 @@ def rotate_log(log_path,MAX_SIZE):
 if __name__=="__main__":
     
     check_log_exist()
-    get_log_size(log_path)
-    result=rotate_log(log_path,MAX_SIZE)
+    get_log_size()
+    write_to_log("这是一次测试日志写入")
+    result=rotate_log(log_path)
     
     #运行成功则返回备份日志地址
     if result.get("Success") is True:

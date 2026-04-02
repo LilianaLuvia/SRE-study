@@ -6,3 +6,5 @@ __pycache__/
 logs/
 *.log
 *.bak
+
+def_test.py

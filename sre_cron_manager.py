@@ -1,4 +1,4 @@
-from modules import memory_utils
+from utils import memory_utils
 from datetime import datetime
 import os
 import time
@@ -24,14 +24,14 @@ def cron_manager():
         }
     
     try:
-        while count<10:
+        while count<15:
             if error_count<3:
                 try:
                     now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     print(f"{now} 正在进行第 {count+1} 次循环")
                     result=memory_utils.get_memory_info()
                     count+=1
-                    if result.get("success"):
+                    if result.get("Success"):
                         mem_lst.append(result.get("Available_Mem",0))
                         error_count=0
                     
@@ -43,7 +43,7 @@ def cron_manager():
                 break
             
             #设置运行间隔
-            time.sleep(3)
+            time.sleep(10)
             
     except KeyboardInterrupt:
         print("** 程序已手动结束 **")
@@ -71,6 +71,7 @@ def cron_manager():
 内存波谷：{lowest_mem} Mi
 {"-"*10} ------------ {"-"*10}
 """
+            print(final_report)
         except Exception:
             print("** 出错了! **")
             traceback.print_exc()
@@ -78,7 +79,6 @@ def cron_manager():
         
         print(f"** 本次程序已结束 **")
         print(f"** 共执行 {count} 次循环，发生 {error_count} 次错误 **")
-        print(final_report)
         
         return result
         

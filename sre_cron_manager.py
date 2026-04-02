@@ -7,21 +7,11 @@ import traceback
 #设置全局变量
 base_dir=os.getcwd()
 log_path=os.path.join(base_dir,"logs","health.log")
-<<<<<<< HEAD
 
-def cron_manager(log_path):
+def cron_manager():
     
     #定义方法内变量
     mem_lst=[]
-=======
-mem_lst=[]
-
-def cron_manager(log_path):
-    #定义性能画像变量及统计变量
-    avg_mem = 0.0
-    highest_mem = 0.0
-    lowest_mem = 0.0
->>>>>>> d60d60e26dde16074b6e93b13c5ca48173e82034
     count=0
     error_count=0
     
@@ -39,7 +29,7 @@ def cron_manager(log_path):
                 try:
                     now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     print(f"{now} 正在进行第 {count+1} 次循环")
-                    result=memory_utils.get_memory_info(log_path)
+                    result=memory_utils.get_memory_info()
                     count+=1
                     if result.get("success"):
                         mem_lst.append(result.get("Available_Mem",0))
@@ -90,12 +80,8 @@ def cron_manager(log_path):
         print(f"** 共执行 {count} 次循环，发生 {error_count} 次错误 **")
         print(final_report)
         
-<<<<<<< HEAD
         return result
-=======
-        return None
->>>>>>> d60d60e26dde16074b6e93b13c5ca48173e82034
         
 #主程序运行
 if __name__=="__main__":
-    cron_manager(log_path)
+    cron_manager()

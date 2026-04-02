@@ -26,7 +26,6 @@ def get_memory_info():
         }
         
     try:
-        now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         #抓取系统当前的 available 内存数值
         res=subprocess.run(['free','-h'],capture_output=True,text=True,check=True)

@@ -35,7 +35,8 @@ def monitor_memory(log_path):
         #备份程序完成，则进入下一步程序
         #调用内存检查函数，抓取系统当前的 available 内存数值
         if rotate_success:
-            available_mem=result.get("Available_Mem")
+            mem_check_res=memory_utils.get_memory_info()
+            available_mem=mem_check_res.get("Available_Mem")
             result.update({
                 "Success":rotate_success,
                 "Status":rotate_res.get("Status"),
@@ -52,4 +53,5 @@ def monitor_memory(log_path):
 
 #主程序运行
 if __name__=="__main__":
-    monitor_memory(log_path)    
+    result=monitor_memory(log_path)    
+    print(result)

@@ -3,6 +3,7 @@ import json
 import traceback
 
 config_path=os.path.join("/etc","os-release")
+log=["INFO", "ERROR", "INFO", "WARNING", "ERROR", "ERROR"]
 
 #方法：解析debian系统日志
 def parse_syslog_line(line: str):
@@ -27,12 +28,12 @@ def parse_syslog_line(line: str):
 #方法：日志级别统计数量
 def count_log_levels(level_lst:list):
     level_count={}
-    for info in range(len(level_lst)):
-        if level_lst[info] in level_count:
-            level_count[level_lst[info]]+=1
+    for level in level_lst:
+        if level in level_count:
+            level_count[level]+=1
         else:
-            level_count[level_lst[info]]=1
-    print(level_count)
+            level_count[level]=1
+    return level_count
     
 #方法：简易读取Linux服务(.conf)，生成配置文件.json
 def load_simple_config(config_path):
@@ -54,10 +55,12 @@ def load_simple_config(config_path):
                 config_dir[clean_key]=clean_value
             with open(json_path,'w') as f:
                 json.dump(config_dir,f,indent=4,ensure_ascii=False)
+        return True
     except Exception:
         traceback.print_exc()
+        return False
         
 if __name__=="__main__":
     parse_syslog_line("2026-04-05 14:00 | ERROR | sshd | Failed password for root from 192.168.1.100  \n")
-    count_log_levels(["INFO", "ERROR", "INFO", "WARNING", "ERROR", "ERROR"])
+    count_log_levels(log)
     load_simple_config(config_path)

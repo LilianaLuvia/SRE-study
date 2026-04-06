@@ -17,8 +17,8 @@ def check_log_exist():
         return result
     else :
         result.update({
-            "Success":False,
-            "Log_path":None
+            "Success":True,
+            "Log_path":log_path
         })
         return result
     

@@ -3,9 +3,9 @@ import os
 import traceback
 from datetime import datetime
 
-json_path=os.path.join(os.getcwd(),"logs","memory_history.json")
-
-def update_history(json_path,new_value,max_limit=10):
+#方法：向history.json添加信息,可一次性自定义history.json文件位置
+def update_history(new_value,json_path=os.path.join(os.getcwd(),"logs","history.json")):
+    max_limit=10
     try:
         now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
@@ -36,4 +36,4 @@ def update_history(json_path,new_value,max_limit=10):
         return False
     
 if __name__=="__main__":
-    update_history(json_path,"测试信息")    
+    update_history("测试信息")    

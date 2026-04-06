@@ -8,11 +8,11 @@ import traceback
 base_dir=os.getcwd()
 log_path=os.path.join(base_dir,"logs","health.log")
 
-def cron_manager():
+#方法：按照一定次数自动读取冗余内存，并输出性能画像报告
+def cron_manager(count:int,time_sleep=10):
     
     #定义方法内变量
     mem_lst=[]
-    count=0
     error_count=0
     
     #定义返回值字典
@@ -43,7 +43,7 @@ def cron_manager():
                 break
             
             #设置运行间隔
-            time.sleep(10)
+            time.sleep(time_sleep)
             
     except KeyboardInterrupt:
         print("** 程序已手动结束 **")
@@ -84,4 +84,4 @@ def cron_manager():
         
 #主程序运行
 if __name__=="__main__":
-    cron_manager()
+    cron_manager(10)

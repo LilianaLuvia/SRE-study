@@ -14,7 +14,12 @@ def check_json_exist():
         return True
     
 #方法：向history.json添加信息,可一次性自定义history.json文件位置
-def update_history(new_value,json_path=os.path.join(os.getcwd(),"logs","history.json")):
+def update_history(new_value,json_path=None):
+    
+    #默认路径处理：避免在函数定义时计算动态路径
+    if json_path is None:
+        json_path=os.path.join(os.getcwd(),"logs","history.json")
+        
     max_limit=10
     try:
         now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")

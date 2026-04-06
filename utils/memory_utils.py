@@ -8,7 +8,7 @@ def parse_to_mb(available_mem):
         final_men=float(available_mem.replace("Gi",""))
         return final_men*1024
     elif "Mi" in available_mem:
-        final_men=float(available_mem.replace("Gi",""))
+        final_men=float(available_mem.replace("Mi",""))
         return final_men
     else:
         return 0.0

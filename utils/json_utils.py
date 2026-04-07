@@ -20,7 +20,9 @@ def update_history(new_value,json_path=None):
     if json_path is None:
         json_path=os.path.join(os.getcwd(),"logs","history.json")
         
+    #定义列表长度上限   
     max_limit=10
+    
     try:
         now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
@@ -31,8 +33,8 @@ def update_history(new_value,json_path=None):
         else:
             now_list=[]
         #创建新字典
-        new_dir={"timestamp":now,
-            "value":f"{new_value}",
+        new_dir={"Timestamp":now,
+            "Info":new_value,
             }
         
         #从列表头添加元素

@@ -18,7 +18,7 @@ def check_log_exist():
     else :
         result.update({
             "Success":True,
-            "Log_path":log_path
+            "Log_Path":log_path
         })
         return result
     
@@ -94,6 +94,11 @@ def rotate_log(log_path,MAX_SIZE=50*1024):
     except Exception as e:
         print(f"** 发生异常错误：{e} **")
         return result
+
+#方法：构建基础告警标准化模板
+def format_alert_text(level,event,detail):
+    now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return f"[{level}] {now} | {event:} | {detail}"
 
 if __name__=="__main__":
     

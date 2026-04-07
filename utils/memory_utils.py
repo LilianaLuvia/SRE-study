@@ -54,7 +54,7 @@ def get_memory_info():
                 "Success":True,
                 "Status":status,
                 "Available_Mem":available_mem,
-                "Usage":f"{usage_percent:.2f}%"
+                "Usage":f"{usage_percent:.2f}"
             })
             
         return result

@@ -36,12 +36,11 @@ def monitor_memory(log_path):
         #调用内存检查函数，抓取系统当前的 available 内存数值
         if rotate_success:
             mem_check_res=memory_utils.get_memory_info()
-            available_mem=mem_check_res.get("Available_Mem")
             result.update({
                 "Success":rotate_success,
                 "Status":rotate_res.get("Status"),
-                "Available_mem":available_mem,
-                "Usage%":rotate_res.get("Usage")
+                "Available_Mem":mem_check_res.get("Available_Mem"),
+                "Usage":mem_check_res.get("Usage")
             })
             return result
         else:

@@ -1,4 +1,4 @@
-from utils import regex_utils
+from utils import ip_utils
 from utils import memory_utils
 from collections import Counter
 from utils import log_utils
@@ -14,7 +14,7 @@ def execute_sys_audit(log_name):
     log_path=os.path.join(log_dir,log_name)
     
     #解析提取报错日志关键信息
-    all_logs=regex_utils.parse_ssh_log(log_path)
+    all_logs=ip_utils.parse_ssh_log(log_path)
     failed_ips=[
         item.get("Ip")
         for item in all_logs

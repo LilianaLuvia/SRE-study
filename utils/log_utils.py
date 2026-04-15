@@ -7,12 +7,13 @@ log_dir=os.path.join(base_dir,"logs")
 log_path=os.path.join(log_dir,"health.log")
 
 # 方法：检查logs文件夹或日志文件是否存在
-def check_log_exist():
+def check_log_exist(log_name):
     result={
         "Success":False,
         "Log_Path":None
     }
-    log_path=os.path.join(os.getcwd(),"logs","health.log")
+    log_dir=os.path.join(os.getcwd(),"logs")
+    log_path=os.path.join(log_dir,log_name)
     if not os.path.exists(log_path):  
         return result
     else :
@@ -29,10 +30,10 @@ def get_log_size():
     return log_size
     
 #方法：将信息写入日志文件
-def write_to_log(info):
+def write_to_log(info,log_name):
     now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     final_info=f"{now}\n{info}\n"
-    result=check_log_exist()
+    result=check_log_exist(log_name)
     if result.get("Success"):
         with open(result.get("Log_Path"),'a') as f:
             f.write(final_info)
@@ -102,7 +103,7 @@ def format_alert_text(level,event,detail):
 
 if __name__=="__main__":
     
-    check_log_exist()
+    check_log_exist("health.log")
     get_log_size()
     write_to_log("这是一次测试日志写入")
     result=rotate_log(log_path)

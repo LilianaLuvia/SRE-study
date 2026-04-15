@@ -28,7 +28,7 @@ def generate_markdown_report(ip_dict:dict):
 {ip_report}
     """
     
-    with open(os.path.join(log_dirt,md_path),'a') as f:
+    with open(os.path.join(log_dirt,md_path),'w') as f:
         f.write(total_report)
     
 if __name__=="__main__":

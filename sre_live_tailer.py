@@ -5,7 +5,8 @@ import time
 test_auth_log_path=os.path.join(os.getcwd(),"logs","test_auth.log")
 
 #方法：实时日志流监听
-def follow_logs(log_path:str):
+def follow_logs(log_name:str):
+    log_path=os.path.join(os.getcwd(),"logs",f"{log_name}")
     try:
         with open(log_path,'r') as f:
             f.seek(0,2)

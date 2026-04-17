@@ -7,7 +7,7 @@ log_dir=os.path.join(base_dir,"logs")
 log_path=os.path.join(log_dir,"health.log")
 
 # 方法：检查logs文件夹或日志文件是否存在
-def check_log_exist(log_name):
+def check_log_exist(log_name:str):
     result={
         "Success":False,
         "Log_Path":None
@@ -34,9 +34,10 @@ def write_to_log(info,log_name):
     now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     final_info=f"{now}\n{info}\n"
     result=check_log_exist(log_name)
-    if result.get("Success"):
-        with open(result.get("Log_Path"),'a') as f:
-            f.write(final_info)
+    log_path=result.get("Log_Path")
+    if result.get("Success") and log_path:
+        with open(log_path,'a') as f:
+            f.write(info)
         return True
     else:
         print("** 写入失败 **")
@@ -103,17 +104,17 @@ def format_alert_text(level,event,detail):
 
 if __name__=="__main__":
     
-    check_log_exist("health.log")
-    get_log_size()
-    write_to_log("这是一次测试日志写入")
-    result=rotate_log(log_path)
+    # check_log_exist("health.log")
+    # get_log_size()
+    write_to_log(f"{datetime.now()}这是一次测试日志写入","health.log")
+    # result=rotate_log(log_path)
     
-    #运行成功则返回备份日志地址
-    if result.get("Success") is True:
-        print(f"日志已完成备份：{result.get("Backup_Log")}")
-    elif result.get("Success")=="Skipped":
-        print("** 本次日志备份已跳过 **")
-    elif result.get("Success")=="Initialized":
-        print("日志文件首次创建，已初始化日志")
-    else:
-        print("日志未能正常备份")
+    # #运行成功则返回备份日志地址
+    # if result.get("Success") is True:
+    #     print(f"日志已完成备份：{result.get("Backup_Log")}")
+    # elif result.get("Success")=="Skipped":
+    #     print("** 本次日志备份已跳过 **")
+    # elif result.get("Success")=="Initialized":
+    #     print("日志文件首次创建，已初始化日志")
+    # else:
+    #     print("日志未能正常备份")

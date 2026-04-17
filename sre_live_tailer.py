@@ -13,12 +13,13 @@ def follow_logs(log_path:str):
                 line=f.readline()
                 if line:
                     res=ip_utils.parse_ssh_log(line)
+                    yield res
                 else:
                     time.sleep(0.5)
                     continue           
           
     except KeyboardInterrupt:
-        return
+        return False
 
 if __name__=="__main__":
     follow_logs(test_auth_log_path)

@@ -11,7 +11,9 @@ def generate_markdown_report(ip_dict:dict):
     now=get_time()
     mem_report=memory_utils.get_memory_info()
     ip_report_lines=ip_utils.generate_ascii_bar(ip_dict)
-    ip_report="\n".join(ip_report_lines)
+    ip_report = ""
+    if ip_report_lines:
+        ip_report="\n".join(ip_report_lines)
     
     day=datetime.now().strftime("%Y%m%d")
     log_dirt=os.path.join(os.getcwd(),'logs')

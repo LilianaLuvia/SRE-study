@@ -34,8 +34,9 @@ def execute_sys_audit(log_name):
     
     #决策集合(使用列表收集所有警报) and 写入日志
     alert=[]
-    if float(mem_usage.get("Usage"))>90:
-        msg=f"内存使用率已达{int(mem_usage.get("Usage"))}%"
+    usage = mem_usage.get("Usage")
+    if usage and float(usage) > 90:
+        msg=f"内存使用率已达{int(float(usage))}%"
         alert.append(msg)
         log_utils.write_to_log(log_utils.format_alert_text("CRITICAL","High_Usage",msg),log_name)
         

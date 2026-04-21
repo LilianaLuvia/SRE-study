@@ -1,6 +1,6 @@
 from collections import Counter
 from utils import log_u
-import sre_report_generator
+import archive.sre_report_generator as sre_report_generator
 import time
 import os
 

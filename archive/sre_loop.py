@@ -1,4 +1,4 @@
-from sre_report_generator import generate_markdown_report
+from archive.sre_report_generator import generate_markdown_report
 from utils import auth_utils
 import time
 import os

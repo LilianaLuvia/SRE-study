@@ -1,5 +1,13 @@
-#方法: 状态变迁控制器
+last_level="HEALTHY"
 
+#方法: 状态变迁控制器
+def has_risk_changed(new_level):
+    global last_level
+    if new_level==last_level:
+        return False
+    else:
+        last_level=new_level
+        return True
 
 #方法: 对sre_monitor_hub.py数据聚合中心的数据进行统一状态分析(专用方法)
 def analyze_snapshot_risk(snapshot:dict):

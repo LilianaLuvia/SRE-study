@@ -12,7 +12,7 @@ test_logs = [
     "2026-04-07 00:07 | INFO | systemd | Started Daily Cleanup of Temporary Directories"
 ]
 
-#方法：统计系统日志中报错的条目，并收集输出
+#方法: 统计系统日志中报错的条目，并收集输出
 def analyze_log_stream(raw_line):
     try:
         
@@ -28,7 +28,7 @@ def analyze_log_stream(raw_line):
                 valid_logs.append(log)
                 total_parse+=1
         
-        #统计Stream：统计各个日志级别数量
+        #统计Stream: 统计各个日志级别数量
         all_valid_level=[logs_level.get("Level") for logs_level in valid_logs]
         level_count=sys_utils.count_log_levels(all_valid_level) 
         

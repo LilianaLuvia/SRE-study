@@ -6,7 +6,7 @@ base_dir=os.getcwd()
 log_dir=os.path.join(base_dir,"logs")
 log_path=os.path.join(log_dir,"health.log")
 
-# 方法：检查logs文件夹或日志文件是否存在
+# 方法: 检查logs文件夹或日志文件是否存在
 def check_log_exist(log_name:str):
     result={
         "Success":False,
@@ -23,13 +23,13 @@ def check_log_exist(log_name:str):
         })
         return result
     
-# 方法：打印日志文件大小
+# 方法: 打印日志文件大小
 def get_log_size():
     log_size=os.stat(log_path)
     print(f"health.log: {log_size.st_size} 字节")
     return log_size
     
-#方法：将信息写入日志文件
+#方法: 将信息写入日志文件
 def write_to_log(info,log_name):
     now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     final_info=f"{now}\n{info}\n"
@@ -43,7 +43,7 @@ def write_to_log(info,log_name):
         print("** 写入失败 **")
         return False
     
-#方法：备份日志文件
+#方法: 备份日志文件
 def rotate_log(log_path,MAX_SIZE=50*1024):
     
     #定义返回值字典
@@ -68,13 +68,13 @@ def rotate_log(log_path,MAX_SIZE=50*1024):
                 os.rename(log_path,backup_log)
                 result.update({
                     "Success":True,
-                    "Status":f"日志已完成备份：{backup_log}",
+                    "Status":f"日志已完成备份: {backup_log}",
                     "Backup_Log":backup_log
                 })
                 return result
             else:
                 size=os.path.getsize(log_path)
-                print(f"文件未超出 {MAX_SIZE} ，当前文件大小：{size} 字节")
+                print(f"文件未超出 {MAX_SIZE} ，当前文件大小: {size} 字节")
                 result.update({
                     "Success":"Skipped",
                     "Status":f"本次日志备份已跳过",
@@ -94,10 +94,10 @@ def rotate_log(log_path,MAX_SIZE=50*1024):
             return result
                 
     except Exception as e:
-        print(f"** 发生异常错误：{e} **")
+        print(f"** 发生异常错误: {e} **")
         return result
 
-#方法：构建基础告警标准化模板
+#方法: 构建基础告警标准化模板
 def format_alert_text(level,event,detail):
     now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return f"[{level}] {now} | {event:} | {detail}"
@@ -111,7 +111,7 @@ if __name__=="__main__":
     
     # #运行成功则返回备份日志地址
     # if result.get("Success") is True:
-    #     print(f"日志已完成备份：{result.get("Backup_Log")}")
+    #     print(f"日志已完成备份: {result.get("Backup_Log")}")
     # elif result.get("Success")=="Skipped":
     #     print("** 本次日志备份已跳过 **")
     # elif result.get("Success")=="Initialized":

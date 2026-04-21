@@ -1,6 +1,6 @@
 import shutil
 
-#方法：获取磁盘或者某个文件夹下的内存信息
+#方法: 获取磁盘或者某个文件夹下的内存信息
 def get_disk_usage_report(path="/"):
     gb_unit=1024**3
     res=shutil.disk_usage(path)

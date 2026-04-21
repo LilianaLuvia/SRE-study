@@ -1,6 +1,6 @@
 import utils
 
-#方法：SRE 数据聚合中心
+#方法: SRE 数据聚合中心
 def get_system_snapshot():
     snapshot={
         "Hardware":{

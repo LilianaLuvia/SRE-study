@@ -7,7 +7,7 @@ import os
 
 test_auth_log_path=os.path.join(os.getcwd(),"logs","test_auth.log")
 
-#方法：执行安全审计
+#方法: 执行安全审计
 def execute_sys_audit(log_name):
     #初始化工作目录
     log_dir=os.path.join(os.getcwd(),'logs')

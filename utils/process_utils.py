@@ -2,7 +2,7 @@ import psutil
 from collections import Counter
 from datetime import datetime
 
-#方法：遍历系统当前运行的所有进程，获取进程的使用信息
+#方法: 遍历系统当前运行的所有进程，获取进程的使用信息
 def get_cpu_processes(count=5):
     total_process=[]
     for process in psutil.process_iter(attrs=['pid','name','cpu_percent','create_time']):

@@ -8,7 +8,7 @@ import traceback
 base_dir=os.getcwd()
 log_path=os.path.join(base_dir,"logs","health.log")
 
-#方法：按照一定次数自动读取冗余内存，并输出性能画像报告
+#方法: 按照一定次数自动读取冗余内存，并输出性能画像报告
 def cron_manager(count:int,time_sleep=10):
     
     #定义方法内变量
@@ -64,11 +64,11 @@ def cron_manager(count:int,time_sleep=10):
                 
             final_report=f"""
 {"-"*10} 性能画像报告 {"-"*10}
-总巡查次数：{count}
-有效样本数：{count-error_count}
-平均可用内存：{avg_mem:.2f} Mi
-内存波峰：{highest_mem} Mi
-内存波谷：{lowest_mem} Mi
+总巡查次数: {count}
+有效样本数: {count-error_count}
+平均可用内存: {avg_mem:.2f} Mi
+内存波峰: {highest_mem} Mi
+内存波谷: {lowest_mem} Mi
 {"-"*10} ------------ {"-"*10}
 """
             print(final_report)

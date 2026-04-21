@@ -5,7 +5,7 @@ import os
 
 test_auth_log_path=os.path.join(os.getcwd(),"logs","test_auth.log")
 
-#方法：控制程序自动化运行
+#方法: 控制程序自动化运行
 def start_watchdog(interval:int,test_auth_log_path:str):
     try:
         count=1

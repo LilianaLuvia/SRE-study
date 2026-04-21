@@ -2,7 +2,7 @@ import os
 import subprocess
 from datetime import datetime
 
-#方法：数据清洗，清除"Gi"、"Mi"
+#方法: 数据清洗，清除"Gi"、"Mi"
 def parse_to_mb(available_mem):
     if "Gi" in available_mem:
         final_men=float(available_mem.replace("Gi",""))
@@ -13,7 +13,7 @@ def parse_to_mb(available_mem):
     else:
         return 0.0
     
-#方法：查看完整内存状态及计算压力值Usage%
+#方法: 查看完整内存状态及计算压力值Usage%
 def get_memory_info():
     MAX_SIZE=20*1024
     
@@ -60,6 +60,6 @@ def get_memory_info():
         return result
         
     except subprocess.CalledProcessError as e:
-        print(f"命令运行出错：{e}")
+        print(f"命令运行出错: {e}")
         return result
 

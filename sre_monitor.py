@@ -12,7 +12,7 @@ FINAL=False
 #检查logs文件是否存在
 os.makedirs(os.path.join(base_dir,"logs"),exist_ok=True)
 
-#方法：完整冗余内存监控
+#方法: 完整冗余内存监控
 def monitor_memory(log_path):
     MAX_SIZE=20*1024
     

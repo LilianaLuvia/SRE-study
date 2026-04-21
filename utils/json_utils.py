@@ -5,7 +5,7 @@ from datetime import datetime
 
 base_dir=os.getcwd()
 
-#方法：检查memory_history.json是否存在
+#方法: 检查memory_history.json是否存在
 def check_json_exist():
     json_path=os.path.join(os.getcwd(),"logs","history.json")
     if not os.path.exists(json_path):  
@@ -13,10 +13,10 @@ def check_json_exist():
     else :
         return True
     
-#方法：向history.json添加信息,可一次性自定义history.json文件位置
+#方法: 向history.json添加信息,可一次性自定义history.json文件位置
 def update_history(new_value,json_path=None):
     
-    #默认路径处理：避免在函数定义时计算动态路径
+    #默认路径处理: 避免在函数定义时计算动态路径
     if json_path is None:
         json_path=os.path.join(os.getcwd(),"logs","history.json")
         

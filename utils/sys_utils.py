@@ -5,7 +5,7 @@ import traceback
 config_path=os.path.join("/etc","os-release")
 log=["INFO", "ERROR", "INFO", "WARNING", "ERROR", "ERROR"]
 
-#方法：解析debian系统日志
+#方法: 解析debian系统日志
 def parse_syslog_line(line: str):
     try:
         info_lst=line.strip().split("|",3)
@@ -25,7 +25,7 @@ def parse_syslog_line(line: str):
         print("出现异常喵！")
         return False,None
         
-#方法：日志级别统计数量
+#方法: 日志级别统计数量
 def count_log_levels(level_lst:list):
     level_count={}
     for level in level_lst:
@@ -35,7 +35,7 @@ def count_log_levels(level_lst:list):
             level_count[level]=1
     return level_count
     
-#方法：简易读取Linux服务(.conf)，生成配置文件.json
+#方法: 简易读取Linux服务(.conf)，生成配置文件.json
 def load_simple_config(config_path):
     json_path=os.path.join(os.getcwd(),"logs","config_record.json")
     try:

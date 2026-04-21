@@ -1,10 +1,9 @@
 from collections import Counter
 import sre_live_tailer
-from utils import ip_utils
 import sre_report_generator
 import time
 
-#方法：多维监控
+#方法: 多维监控
 def run_intergrated_monitor(log_name:str):
     ip_attack_count=Counter()
     last_time=0

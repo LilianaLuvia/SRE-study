@@ -8,7 +8,7 @@ def get_system_snapshot():
             "Disk":utils.disk_u.get_disk_usage_report()
         },
         "Security":{
-            "Active_Ssh":utils.network_u.get_active_ssh_session()
+            "Active_Ssh":utils.ip_u.get_active_ssh_session()
         },
         "Process":{
             "Top_Process":utils.process_u.get_cpu_processes()

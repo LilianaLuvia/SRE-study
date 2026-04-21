@@ -26,15 +26,15 @@ def generate_markdown_report(login_failed_dict:dict):
 
 |Memory|Static|
 |:---:|:---:|
-|Avaliable_Mem|{mem_report.get("Available_Mem")} Mb|
-|Usage|{mem_report.get("Usage")}%|
+|avaliable_mem|{mem_report.get("available_mem")} Mb|
+|usage|{mem_report.get("usage")}%|
 
 |Disk|Static|
 |:---:|:---:|
-|disk_total|{disk_report.get("Total")} Gb|
-|disk_used|{disk_report.get("Used")} Gb|
-|disk_free|{disk_report.get("Free")} Gb|
-|disk_usage|{disk_report.get("Usage")} %|
+|disk_total|{disk_report.get("total")} Gb|
+|disk_used|{disk_report.get("used")} Gb|
+|disk_free|{disk_report.get("free")} Gb|
+|disk_usage|{disk_report.get("usage")} %|
 
 ### ip_count
 ```text

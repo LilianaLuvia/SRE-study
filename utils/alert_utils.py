@@ -12,9 +12,9 @@ def has_risk_changed(new_level):
 #方法: 对sre_monitor_hub.py数据聚合中心的数据进行统一状态分析(专用方法)
 def analyze_snapshot_risk(snapshot:dict):
     issues=[]
-    memory_usage=float(snapshot["Hardware"]["Memory"]["Usage"])
-    disk_usage=float(snapshot["Hardware"]["Disk"]["Usage"])
-    active_ssh=snapshot["Security"]["Active_Ssh"]
+    memory_usage=float(snapshot["hardware"]["memory"]["usage"])
+    disk_usage=float(snapshot["hardware"]["disk"]["usage"])
+    active_ssh=snapshot["security"]["active_Ssh"]
     
     #硬件检查"Hardware"
     #Meomry Disk
@@ -28,18 +28,18 @@ def analyze_snapshot_risk(snapshot:dict):
     if len(active_ssh) >=5:
         issues.append(f"当前ssh已连接({active_ssh}个)")
     
-    intergrated_info={"Level":None,
-                      "Details":issues}
+    intergrated_info={"level":None,
+                      "details":issues}
     
     #安全权重分析
     if len(issues)>2 or memory_usage>90:
-        intergrated_info["Level"]="CRITICAL"
+        intergrated_info["level"]="CRITICAL"
         return intergrated_info
     elif len(issues)==1:
-        intergrated_info["Level"]="WARNING"
+        intergrated_info["level"]="WARNING"
         return intergrated_info
     else:
-        intergrated_info["Level"]="HEALTHY"
+        intergrated_info["level"]="HEALTHY"
         return intergrated_info
  
 if __name__=="__main__":

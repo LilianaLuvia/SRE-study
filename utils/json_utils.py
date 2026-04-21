@@ -33,8 +33,8 @@ def update_history(new_value,json_path=None):
         else:
             now_list=[]
         #创建新字典
-        new_dir={"Timestamp":now,
-            "Info":new_value,
+        new_dir={"timestamp":now,
+            "info":new_value,
             }
         
         #从列表头添加元素

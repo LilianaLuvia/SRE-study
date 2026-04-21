@@ -19,10 +19,10 @@ def get_memory_info():
     
     #定义返回值字典
     result={
-        "Success":False,
-        "Status":None,
-        "Available_Mem":None,
-        "Usage":None
+        "success":False,
+        "status":None,
+        "available_mem":None,
+        "usage":None
         }
         
     try:
@@ -51,10 +51,10 @@ def get_memory_info():
         
         #将数据计入字典，程序运行返回数据以字典形式作返回值,以便后续分析使用
         result.update({
-                "Success":True,
-                "Status":status,
-                "Available_Mem":available_mem,
-                "Usage":f"{usage_percent:.2f}"
+                "success":True,
+                "status":status,
+                "available_mem":available_mem,
+                "usage":f"{usage_percent:.2f}"
             })
             
         return result

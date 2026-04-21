@@ -11,8 +11,8 @@ log_path=os.path.join(log_dir,"health.log")
 # 方法: 检查logs文件夹或日志文件是否存在
 def check_log_exist(log_name:str):
     result={
-        "Success":False,
-        "Log_Path":None
+        "success":False,
+        "log_path":None
     }
     log_dir=os.path.join(os.getcwd(),"logs")
     log_path=os.path.join(log_dir,log_name)
@@ -20,8 +20,8 @@ def check_log_exist(log_name:str):
         return result
     else :
         result.update({
-            "Success":True,
-            "Log_Path":log_path
+            "success":True,
+            "log_path":log_path
         })
         return result
     
@@ -50,9 +50,9 @@ def rotate_log(log_path,MAX_SIZE=50*1024):
     
     #定义返回值字典
     result={
-        "Success":None,
-        "Status":"日志未能正常备份",
-        "Backup_Log":None
+        "success":None,
+        "status":"日志未能正常备份",
+        "backup_log":None
     }
     try:    
         now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -69,18 +69,18 @@ def rotate_log(log_path,MAX_SIZE=50*1024):
                 backup_log=f"{log_path}.{timestamp}.bak"
                 os.rename(log_path,backup_log)
                 result.update({
-                    "Success":True,
-                    "Status":f"日志已完成备份: {backup_log}",
-                    "Backup_Log":backup_log
+                    "success":True,
+                    "status":f"日志已完成备份: {backup_log}",
+                    "backup_L\log":backup_log
                 })
                 return result
             else:
                 size=os.path.getsize(log_path)
                 print(f"文件未超出 {MAX_SIZE} ，当前文件大小: {size} 字节")
                 result.update({
-                    "Success":"Skipped",
-                    "Status":f"本次日志备份已跳过",
-                    "Backup_Log":None
+                    "success":"Skipped",
+                    "status":f"本次日志备份已跳过",
+                    "backup_log":None
                 })
                 return result
                 
@@ -89,9 +89,9 @@ def rotate_log(log_path,MAX_SIZE=50*1024):
             with open(log_path,'w') as f:
                 f.write(f"health.log has been created just now   --- {now}\n")
                 result.update({
-                    "Success":"Initialized",
-                    "Status":"日志文件首次创建，已初始化日志",
-                    "Backup_Log":None
+                    "success":"Initialized",
+                    "status":"日志文件首次创建，已初始化日志",
+                    "backup_log":None
                 })
             return result
                 

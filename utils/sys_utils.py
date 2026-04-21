@@ -15,10 +15,10 @@ def parse_syslog_line(line: str):
         clean_info=[item.strip() for item in info_lst]
         timestamp,level,process,message=clean_info
         log={
-            "Timestamp":timestamp,
-            "Level":level,
-            "Process":process,
-            "Message":message
+            "timestamp":timestamp,
+            "level":level,
+            "process":process,
+            "message":message
         }
         return True,log
     except Exception as e:

@@ -18,9 +18,9 @@ def cron_manager(count:int,time_sleep=10):
     #定义返回值字典
     result={
         "success":False,
-        "Status":None,
-        "Available_Mem":None,
-        "Usage%":None
+        "status":None,
+        "available_mem":None,
+        "usage%":None
         }
     
     try:
@@ -31,8 +31,8 @@ def cron_manager(count:int,time_sleep=10):
                     print(f"{now} 正在进行第 {count+1} 次循环")
                     result=memory_utils.get_memory_info()
                     count+=1
-                    if result.get("Success"):
-                        mem_lst.append(result.get("Available_Mem",0))
+                    if result.get("success"):
+                        mem_lst.append(result.get("available_mem",0))
                         error_count=0
                     
                 except Exception:

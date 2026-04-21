@@ -35,16 +35,16 @@ def execute_sys_audit(log_name):
     
     #决策集合(使用列表收集所有警报) and 写入日志
     alert=[]
-    usage = mem_usage.get("Usage")
+    usage = mem_usage.get("usage")
     if usage and float(usage) > 90:
         msg=f"内存使用率已达{int(float(usage))}%"
         alert.append(msg)
-        log_utils.write_to_log(log_utils.format_alert_text("CRITICAL","High_Usage",msg),log_name)
+        log_utils.write_to_log(log_utils.format_alert_text("CRITICAL","high_usage",msg),log_name)
         
     if count>3:
         msg=f"IP: {top_ip},失败次数: {count}"
         alert.append(msg)
-        log_utils.write_to_log(log_utils.format_alert_text("CRITICAL","Login Exception",msg),log_name)
+        log_utils.write_to_log(log_utils.format_alert_text("CRITICAL","login exception",msg),log_name)
         
     #批量存档history.json   
     for alert_msg in alert:

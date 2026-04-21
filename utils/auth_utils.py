@@ -9,7 +9,7 @@ auth_log_path=os.path.join("/var","log","auth.log")
 
 #方法: 正则表达式截取ip登录信息
 def parse_ssh_log(source):
-    regex_pattern=r"]: FAILED SU \(to (?P<Target_user>.*?)\) (?P<Who>.*?) on"
+    regex_pattern=r"]: FAILED SU \(to (?P<target_user>.*?)\) (?P<who>.*?) on"
     parse_result=[]
     
    #内部方法: 统一不同输入源
@@ -45,9 +45,9 @@ def generate_ascii_bar(stats_dict:dict,reverse: bool=True):
     if stats_dict:
         max_length=max(stats_dict.values())
         sorted_dict=sorted(stats_dict.items(),key=lambda item: item[1],reverse=reverse)
-        for Who,count in sorted_dict: 
+        for who,count in sorted_dict: 
             length=int((count/max_length)*30)
-            ascii_bar.append(f"[{Who}] {bar*length} ({count})")
+            ascii_bar.append(f"[{who}] {bar*length} ({count})")
         return ascii_bar
     
     else:

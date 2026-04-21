@@ -1,4 +1,4 @@
-from utils import ip_utils
+from utils import auth_utils
 from utils import memory_utils
 from collections import Counter
 from utils import log_utils
@@ -6,6 +6,7 @@ from utils import json_utils
 import os
 
 test_auth_log_path=os.path.join(os.getcwd(),"logs","test_auth.log")
+auth_log_path=os.path.join("/var","log","auth.log")
 
 #方法: 执行安全审计
 def execute_sys_audit(log_name):
@@ -14,7 +15,7 @@ def execute_sys_audit(log_name):
     log_path=os.path.join(log_dir,log_name)
     
     #解析提取报错日志关键信息
-    all_logs=ip_utils.parse_ssh_log(log_path)
+    all_logs=auth_utils.parse_ssh_log(log_path)
     failed_ips=[
         item.get("Ip")
         for item in all_logs

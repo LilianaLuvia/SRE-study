@@ -1,6 +1,6 @@
 from utils import memory_utils
 from utils import disk_utils
-from utils import ip_utils
+from utils import auth_utils
 from utils import get_time
 from datetime import datetime
 import os
@@ -8,14 +8,14 @@ import os
 test_example={"192.168.1.100": 15, "172.16.0.5": 3, "10.0.0.1": 8}
 
 #方法: 获取markdown格式的SRE系统安全与性能审计
-def generate_markdown_report(ip_dict:dict):
+def generate_markdown_report(login_failed_dict:dict):
     now=get_time()
     mem_report=memory_utils.get_memory_info()
     disk_report=disk_utils.get_disk_usage_report()
-    ip_report_lines=ip_utils.generate_ascii_bar(ip_dict)
+    login_failed_report_lines=auth_utils.generate_ascii_bar(login_failed_dict)
     ip_report = ""
-    if ip_report_lines:
-        ip_report="\n".join(ip_report_lines)
+    if login_failed_report_lines:
+        ip_report="\n".join(login_failed_report_lines)
     
     day=datetime.now().strftime("%Y%m%d")
     log_dirt=os.path.join(os.getcwd(),'logs')

@@ -1,5 +1,7 @@
 import os
 from datetime import datetime
+from utils import auth_utils
+import time
 
 #定义环境变量
 base_dir=os.getcwd()
@@ -101,6 +103,23 @@ def rotate_log(log_path,MAX_SIZE=50*1024):
 def format_alert_text(level,event,detail):
     now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return f"[{level}] {now} | {event:} | {detail}"
+
+#方法: 实时日志流监听
+def follow_logs(log_path:str):
+    try:
+        with open(log_path,'r') as f:
+            f.seek(0,2)
+            while True:
+                line=f.readline()
+                if line:
+                    res=auth_utils.parse_ssh_log(line)
+                    yield res
+                else:
+                    time.sleep(0.5)
+                    continue           
+          
+    except KeyboardInterrupt:
+        return False
 
 if __name__=="__main__":
     

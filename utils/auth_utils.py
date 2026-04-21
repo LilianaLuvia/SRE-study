@@ -5,10 +5,11 @@ from typing import Iterable
 import psutil
 
 test_auth_log_path=os.path.join(os.getcwd(),"logs","test_auth.log")
+auth_log_path=os.path.join("/var","log","auth.log")
 
 #方法: 正则表达式截取ip登录信息
 def parse_ssh_log(source):
-    regex_pattern=r"]: (?P<Info>.*?) for (?P<User>.*?) from (?P<Ip>\d+\.\d+\.\d+\.\d+) port (?P<Port>\d+)"
+    regex_pattern=r"]: FAILED SU \(to (?P<Target_user>.*?)\) (?P<Who>.*?) on"
     parse_result=[]
     
    #内部方法: 统一不同输入源
@@ -32,21 +33,21 @@ def parse_ssh_log(source):
         if match:
             yield match.groupdict()
 
-#方法: 统计各个ip的出现次数，返回从大到小排序,传入count以指定传回前n项
+#方法: 统计各个尝试登录用户的出现次数,返回从大到小排序,传入count以指定传回前n项
 def ip_counter(parse_result:Iterable,count:int=0):
-    counter_ip=Counter(item["Ip"] for item in parse_result)
+    counter_ip=Counter(item["who"] for item in parse_result)
     return dict(counter_ip.most_common(count if count>0 else None))
 
-#方法: 生成ip登录错误次数进行图标化
+#方法: 生成登录错误次数进行图标化
 def generate_ascii_bar(stats_dict:dict,reverse: bool=True):
     bar="█"
     ascii_bar=[]
     if stats_dict:
         max_length=max(stats_dict.values())
         sorted_dict=sorted(stats_dict.items(),key=lambda item: item[1],reverse=reverse)
-        for ip,count in sorted_dict: 
+        for Who,count in sorted_dict: 
             length=int((count/max_length)*30)
-            ascii_bar.append(f"[{ip:<15}] {bar*length} ({count})")
+            ascii_bar.append(f"[{Who}] {bar*length} ({count})")
         return ascii_bar
     
     else:
@@ -65,6 +66,7 @@ def get_active_ssh_session():
     return total
     
 if __name__=="__main__":
-    ip_count=ip_counter(parse_ssh_log(test_auth_log_path))
+    ip_count=ip_counter(parse_ssh_log(auth_log_path))
     print(ip_count)
     print(generate_ascii_bar(ip_count))
+    print(get_active_ssh_session())

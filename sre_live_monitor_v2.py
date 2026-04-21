@@ -1,25 +1,28 @@
 from collections import Counter
-import sre_live_tailer
+from utils import log_u
 import sre_report_generator
 import time
+import os
+
+auth_log_path=os.path.join("/var","log","auth.log")
 
 #方法: 多维监控
-def run_intergrated_monitor(log_name:str):
-    ip_attack_count=Counter()
+def run_intergrated_monitor(log_path:str):
+    login_attack_count=Counter()
     last_time=0
     
     #由迭代器follow_logs驱动流程,follow_logs每产生一行就进行完整流程一次
-    for new_res in sre_live_tailer.follow_logs(log_name):
-        for ip_res in new_res:
-            target_ip=ip_res.get("Ip")
-            ip_attack_count.update([target_ip])
+    for new_res in log_u.follow_logs(log_path):
+        for res in new_res:
+            failed_user=res.get("Who")
+            login_attack_count.update([failed_user])
 
         current_time=time.time()
-        if current_time-last_time>10 and ip_attack_count:
-            sre_report_generator.generate_markdown_report(ip_attack_count)
+        if current_time-last_time>10 and login_attack_count:
+            sre_report_generator.generate_markdown_report(login_attack_count)
             last_time=current_time
         
 
 if __name__=="__main__":
-    print(run_intergrated_monitor("test_auth.log"))
+    print(run_intergrated_monitor(auth_log_path))
         

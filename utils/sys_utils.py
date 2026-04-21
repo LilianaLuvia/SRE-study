@@ -5,7 +5,7 @@ import traceback
 config_path=os.path.join("/etc","os-release")
 log=["INFO", "ERROR", "INFO", "WARNING", "ERROR", "ERROR"]
 
-#方法: 解析debian系统日志
+#方法: 解析debian操作系统日志,获取操作系统信息
 def parse_syslog_line(line: str):
     try:
         info_lst=line.strip().split("|",3)

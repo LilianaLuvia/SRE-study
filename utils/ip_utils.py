@@ -2,6 +2,7 @@ import re
 import os
 from collections import Counter
 from typing import Iterable
+import psutil
 
 test_auth_log_path=os.path.join(os.getcwd(),"logs","test_auth.log")
 
@@ -51,6 +52,17 @@ def generate_ascii_bar(stats_dict:dict,reverse: bool=True):
     else:
         print("导入了空字典喵！")
         return None
+    
+#方法：查看当前远程连接中已连接的ip
+def get_active_ssh_session():
+    total=[]
+    connection=psutil.net_connections("inet")
+    for connect in connection:
+        if connect.status=="ESTABLISHED" and connect.raddr and connect.raddr.port==22:
+            total.append({"Remote_Ip":connect.raddr.ip,
+                          "Remote_Port":connect.raddr.port,
+                          "Status":connect.status})
+    return total
     
 if __name__=="__main__":
     ip_count=ip_counter(parse_ssh_log(test_auth_log_path))

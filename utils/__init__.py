@@ -1,6 +1,6 @@
-from utils import network_utils as network_u
 from utils import process_utils as process_u
 from utils import memory_utils as memory_u
+from utils import alert_utils as alert_u
 from utils import disk_utils as disk_u
 from utils import json_utils as json_u
 from utils import log_utils as log_u

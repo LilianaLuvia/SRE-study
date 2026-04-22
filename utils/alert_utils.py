@@ -12,7 +12,7 @@ def has_risk_changed(new_level):
 #方法: 对sre_monitor_hub.py数据聚合中心的数据进行统一状态分析(专用方法)
 def analyze_snapshot_risk(snapshot:dict):
     issues=[]
-    memory_usage=float(snapshot["hardware"]["memory"]["usage"])
+    memory_usage=float(snapshot["hardware"]["memory"]["usage_mem"])
     disk_usage=float(snapshot["hardware"]["disk"]["usage"])
     active_ssh=snapshot["security"]["active_ssh"]
     

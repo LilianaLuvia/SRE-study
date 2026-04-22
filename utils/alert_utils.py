@@ -14,7 +14,7 @@ def analyze_snapshot_risk(snapshot:dict):
     issues=[]
     memory_usage=float(snapshot["hardware"]["memory"]["usage"])
     disk_usage=float(snapshot["hardware"]["disk"]["usage"])
-    active_ssh=snapshot["security"]["active_Ssh"]
+    active_ssh=snapshot["security"]["active_ssh"]
     
     #硬件检查"Hardware"
     #Meomry Disk

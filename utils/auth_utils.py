@@ -60,9 +60,9 @@ def get_active_ssh_session():
     connection=psutil.net_connections("inet")
     for connect in connection:
         if connect.status=="ESTABLISHED" and connect.raddr and connect.raddr.port==22:
-            total.append({"Remote_Ip":connect.raddr.ip,
-                          "Remote_Port":connect.raddr.port,
-                          "Status":connect.status})
+            total.append({"remote_ip":connect.raddr.ip,
+                          "remote_port":connect.raddr.port,
+                          "status":connect.status})
     return total
     
 if __name__=="__main__":

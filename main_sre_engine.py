@@ -11,7 +11,11 @@ def start_inspection_loop():
             res=alert_u.analyze_snapshot_risk(data)
             if alert_u.has_risk_changed(res.get("level")):
                 print({"timestamp":get_time(),
-                                "details":res.get("details")})
+                        "details":res.get("details")})
+                print(data)
+            else:
+                print({"timestamp":get_time(),
+                    "details":"当前系统状态稳定"})
             time.sleep(10)
     except KeyboardInterrupt:
         print("\n程序已手动结束")

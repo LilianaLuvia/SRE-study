@@ -1,5 +1,5 @@
 from collections import Counter
-from utils import log_u
+from utils import log
 import archive.sre_report_generator as sre_report_generator
 import time
 import os
@@ -12,7 +12,7 @@ def run_intergrated_monitor(log_path:str):
     last_time=0
     
     #由迭代器follow_logs驱动流程,follow_logs每产生一行就进行完整流程一次
-    for new_res in log_u.follow_logs(log_path):
+    for new_res in log.follow_logs(log_path):
         for res in new_res:
             failed_user=res.get("who")
             login_attack_count.update([failed_user])

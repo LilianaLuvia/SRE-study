@@ -1,7 +1,7 @@
 from sre_monitor_hub import get_system_snapshot
 from utils import alert
 import time
-from utils import get_time
+from utils import getTime
 
 #方法: SRE 自动化巡检总线
 def start_inspection_loop():
@@ -10,11 +10,11 @@ def start_inspection_loop():
             data=get_system_snapshot()
             res=alert.analyze_snapshot_risk(data)
             if alert.has_risk_changed(res.get("level")):
-                print({"timestamp":get_time(),
+                print({"timestamp":getTime.now(),
                         "details":res.get("details")})
                 print(data)
             else:
-                print({"timestamp":get_time(),
+                print({"timestamp":getTime.now(),
                     "details":"当前系统状态稳定"})
             time.sleep(10)
     except KeyboardInterrupt:

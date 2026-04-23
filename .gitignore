@@ -7,4 +7,7 @@ logs/
 *.log
 *.bak
 
+#忽略crchiev文件夹
+archive/
+
 test_main.py

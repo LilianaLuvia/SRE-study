@@ -22,8 +22,8 @@ def get_memory_info():
     usage_mem=res.percent
     
     return {
-        "total_mem":f"{total_mem/(1024**2):.2f}",
-        "used_mem":f"{used_mem/(1024**2):.2f}",
+        "total_mem":f"{total_mem/(1024**3):.2f}",
+        "used_mem":f"{used_mem/(1024**3):.2f}",
         "usage_mem":f"{usage_mem}"
     }
         

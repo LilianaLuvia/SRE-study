@@ -1,10 +1,10 @@
 from utils import database as database
+from utils import getTime as getTime
 from utils import process as process
 from utils import memory as memory
 from utils import alert as alert
 from utils import auth as auth
 from utils import disk as disk
 from utils import json as json
-from utils import time as getTime
 from utils import log as log
 from utils import system as sys

@@ -15,12 +15,13 @@ def analyze_snapshot_risk(snapshot:dict):
     memory_usage=float(snapshot["hardware"]["memory"]["usage_mem"])
     disk_usage=float(snapshot["hardware"]["disk"]["usage"])
     cpu_usage=float(snapshot["process"]["cpu_usage"])
+    failed_login_ip=snapshot["security"]["frequent_login_error_ip"]
     active_ssh=snapshot["security"]["active_ssh"]
     
     #硬件检查"hardware"
     #meomry disk
     if memory_usage >93:
-        issues.append(f"运行内存使用率过高({memory_usage}%)")
+        issues.append(f"运行内存使用率过高({memory_usage}%)") 
     if disk_usage >93:
         issues.append(f"磁盘内存已满({disk_usage}%)")
         
@@ -28,6 +29,9 @@ def analyze_snapshot_risk(snapshot:dict):
     if cpu_usage>93:
         issues.append(f"CPU负载过高({cpu_usage})")
     #安全检查"security"
+    #frequent_login_error_ip
+    if list(failed_login_ip.values())[1]>20:
+        issues.append(f"当前存在高频登录失败ip({failed_login_ip[0]})")
     #active_hsh
     if len(active_ssh) >=5:
         issues.append(f"当前ssh已连接({active_ssh}个)")

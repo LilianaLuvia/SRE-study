@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from utils import auth
+from utils import ip
 import time
 
 #定义环境变量
@@ -112,7 +112,7 @@ def follow_logs(log_path:str):
             while True:
                 line=f.readline()
                 if line:
-                    res=auth.parse_ssh_log(line)
+                    res=ip.parse_ssh_log(line)
                     yield res
                 else:
                     time.sleep(0.5)

@@ -1,6 +1,6 @@
 from utils import memory
 from utils import disk
-from utils import auth
+from utils import ip
 from utils import getTime
 from datetime import datetime
 import os
@@ -12,7 +12,7 @@ def generate_markdown_report(login_failed_dict:dict):
     now=getTime.now()
     mem_report=memory.get_memory_info()
     disk_report=disk.get_disk_usage_report()
-    login_failed_report_lines=auth.generate_ascii_bar(login_failed_dict)
+    login_failed_report_lines=ip.generate_ascii_bar(login_failed_dict)
     ip_report = ""
     if login_failed_report_lines:
         ip_report="\n".join(login_failed_report_lines)

@@ -20,9 +20,9 @@ def analyze_snapshot_risk(snapshot:dict):
     #硬件检查"hardware"
     #meomry disk
     if memory_usage >93:
-        issues.append(f"运行内存占用过高({memory_usage}%)")
+        issues.append(f"运行内存使用率过高({memory_usage}%)")
     if disk_usage >93:
-        issues.append(f"硬盘内存已满({disk_usage}%)")
+        issues.append(f"磁盘内存已满({disk_usage}%)")
         
     #进程检查"process"
     if cpu_usage>93:

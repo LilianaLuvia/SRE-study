@@ -7,7 +7,7 @@ import psutil
 test_auth_log_path=os.path.join(os.getcwd(),"logs","test_auth.log")
 auth_log_path=os.path.join("/var","log","auth.log")
 
-#方法: 正则表达式截取ip登录信息
+#方法: 正则表达式截取高频登录错误ip信息
 def parse_ssh_log(source):
     regex_pattern=r"]: FAILED SU \(to (?P<target_user>.*?)\) (?P<who>.*?) on"
     parse_result=[]

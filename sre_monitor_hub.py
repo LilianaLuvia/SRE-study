@@ -11,7 +11,7 @@ def get_system_snapshot(auth_log_path=None):
             "disk":utils.disk.get_disk_usage_report()
         },
         "security":{
-            "frequent_login_error_ip":utils.ip.ip_counter(utils.ip.parse_ssh_log(auth_log_path)),
+            "frequent_login_error_user":utils.ip.ip_counter(utils.ip.parse_ssh_log(auth_log_path)),
             "active_ssh":utils.ip.get_active_ssh_session()
         },
         "process":{

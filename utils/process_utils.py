@@ -4,12 +4,12 @@ from datetime import datetime
 import time
 
 #方法: 遍历系统当前运行的所有进程，获取进程的使用信息
-def get_cpu_processes(count=5):
+def get_processes_cpu_usage(count=5):
     total_process=[]
     #预热: 触发所有进程的第一次采样
     for p in psutil.process_iter(attrs=["cpu_percent"]):
         pass
-    time.sleep(0.5)
+    time.sleep(0.7)
     
     #正式采样
     for process in psutil.process_iter(attrs=['pid','name','cpu_percent','create_time']):
@@ -26,5 +26,9 @@ def get_cpu_processes(count=5):
     total_process.sort(key=lambda x:x['cpu_percent'],reverse=True)
     return total_process[:count]
 
+#方法: 获取CPU使用率
+def get_cpu_usage():
+    return psutil.cpu_percent(interval=0.7)
+    
 if __name__=="__main__":
-    print(get_cpu_processes())
+    print(get_processes_cpu_usage())

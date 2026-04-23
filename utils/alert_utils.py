@@ -14,17 +14,21 @@ def analyze_snapshot_risk(snapshot:dict):
     issues=[]
     memory_usage=float(snapshot["hardware"]["memory"]["usage_mem"])
     disk_usage=float(snapshot["hardware"]["disk"]["usage"])
+    cpu_usage=float(snapshot["process"]["cpu_usage"])
     active_ssh=snapshot["security"]["active_ssh"]
     
-    #硬件检查"Hardware"
-    #Meomry Disk
-    if memory_usage >90:
+    #硬件检查"hardware"
+    #meomry disk
+    if memory_usage >93:
         issues.append(f"运行内存占用过高({memory_usage}%)")
-    if disk_usage >85:
+    if disk_usage >93:
         issues.append(f"硬盘内存已满({disk_usage}%)")
-    
-    #安全检查"Security"
-    #Active_Ssh
+        
+    #进程检查"process"
+    if cpu_usage>93:
+        issues.append(f"CPU负载过高({cpu_usage})")
+    #安全检查"security"
+    #active_hsh
     if len(active_ssh) >=5:
         issues.append(f"当前ssh已连接({active_ssh}个)")
     
@@ -32,7 +36,7 @@ def analyze_snapshot_risk(snapshot:dict):
                       "details":issues}
     
     #安全权重分析
-    if len(issues)>2 or memory_usage>90:
+    if len(issues)>2 or memory_usage>93 or cpu_usage>93:
         intergrated_info["level"]="CRITICAL"
         return intergrated_info
     elif len(issues)==1:

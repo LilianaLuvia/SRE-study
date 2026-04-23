@@ -4,17 +4,18 @@ import utils
 def get_system_snapshot():
     snapshot={
         "hardware":{
-            "memory":utils.memory_u.get_memory_info(),
-            "disk":utils.disk_u.get_disk_usage_report()
+            "memory":utils.memory.get_memory_info(),
+            "disk":utils.disk.get_disk_usage_report()
         },
         "security":{
-            "active_ssh":utils.auth_u.get_active_ssh_session()
+            "active_ssh":utils.auth.get_active_ssh_session()
         },
         "process":{
-            "top_process":utils.process_u.get_cpu_processes()
+            "cpu_usage":utils.process.get_cpu_usage(),
+            "top_process":utils.process.get_processes_cpu_usage()
         }
     }
     return snapshot
 
 if __name__=="__main__":
-    utils.json_u.update_history(get_system_snapshot())
+    utils.json.update_history(get_system_snapshot())

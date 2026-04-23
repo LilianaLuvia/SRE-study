@@ -1,4 +1,4 @@
-from utils import sys_utils
+from utils import system
 import traceback
 
 test_logs = [
@@ -23,14 +23,14 @@ def analyze_log_stream(raw_line):
         
         #解析Stream
         for line in raw_line:
-            res,log=sys_utils.parse_syslog_line(line)
+            res,log=system.parse_syslog_line(line)
             if res:
                 valid_logs.append(log)
                 total_parse+=1
         
         #统计Stream: 统计各个日志级别数量
         all_valid_level=[logs_level.get("Level") for logs_level in valid_logs]
-        level_count=sys_utils.count_log_levels(all_valid_level) 
+        level_count=system.count_log_levels(all_valid_level) 
         
         #设置搜索逻辑(列表推导式) 
         critical_ssh_logs=[logs for logs in valid_logs if logs.get("Process")=="sshd" and logs.get("Level")=="ERROR"]

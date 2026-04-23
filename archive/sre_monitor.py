@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
-from utils import log_utils
-from utils import memory_utils
+from utils import log
+from utils import memory
 import traceback
 
 #配置环境变量
@@ -28,14 +28,14 @@ def monitor_memory(log_path):
         print("[@] 正在进行 [Log_Rorator] ")
         
         #调用轮转函数，并接收返回值，输出轮转情况
-        rotate_res=log_utils.rotate_log(log_path,mAX_SIZE)
+        rotate_res=log.rotate_log(log_path,mAX_SIZE)
         rotate_success=rotate_res.get("success")
         print(f"{rotate_success}\n")
         
         #备份程序完成，则进入下一步程序
         #调用内存检查函数，抓取系统当前的 available 内存数值
         if rotate_success:
-            mem_check_res=memory_utils.get_memory_info()
+            mem_check_res=memory.get_memory_info()
             result.update({
                 "success":rotate_success,
                 "status":rotate_res.get("status"),

@@ -1,4 +1,4 @@
-from utils import memory_utils
+from utils import memory
 from datetime import datetime
 import os
 import time
@@ -29,7 +29,7 @@ def cron_manager(count:int,time_sleep=10):
                 try:
                     now=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     print(f"{now} 正在进行第 {count+1} 次循环")
-                    result=memory_utils.get_memory_info()
+                    result=memory.get_memory_info()
                     count+=1
                     if result.get("success"):
                         mem_lst.append(result.get("available_mem",0))

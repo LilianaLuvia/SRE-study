@@ -1,7 +1,7 @@
 from utils import memory_utils
 from utils import disk_utils
 from utils import auth_utils
-from utils import get_time
+from utils import getTime
 from datetime import datetime
 import os
 
@@ -9,7 +9,7 @@ test_example={"192.168.1.100": 15, "172.16.0.5": 3, "10.0.0.1": 8}
 
 #方法: 获取markdown格式的SRE系统安全与性能审计
 def generate_markdown_report(login_failed_dict:dict):
-    now=get_time()
+    now=getTime.now()
     mem_report=memory_utils.get_memory_info()
     disk_report=disk_utils.get_disk_usage_report()
     login_failed_report_lines=auth_utils.generate_ascii_bar(login_failed_dict)
@@ -22,7 +22,7 @@ def generate_markdown_report(login_failed_dict:dict):
     md_path=f"report_{day}.md" 
     
     total_report=f"""# SRE 系统安全与性能审计
-生成时间: {get_time()}
+生成时间: {getTime.now()}
 
 |Memory|Static|
 |:---:|:---:|

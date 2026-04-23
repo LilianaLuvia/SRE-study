@@ -1,14 +1,18 @@
 import utils
+import os
 
 #方法: SRE 数据聚合中心
-def get_system_snapshot():
+def get_system_snapshot(auth_log_path=None):
+    if auth_log_path==None:
+        auth_log_path=os.path.join("/var","log","auth.log")
     snapshot={
         "hardware":{
             "memory":utils.memory.get_memory_info(),
             "disk":utils.disk.get_disk_usage_report()
         },
         "security":{
-            "active_ssh":utils.auth.get_active_ssh_session()
+            "frequent_login_error_ip":utils.ip.ip_counter(utils.ip.parse_ssh_log(auth_log_path)),
+            "active_ssh":utils.ip.get_active_ssh_session()
         },
         "process":{
             "cpu_usage":utils.process.get_cpu_usage(),

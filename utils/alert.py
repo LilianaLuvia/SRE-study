@@ -15,7 +15,7 @@ def analyze_snapshot_risk(snapshot:dict):
     memory_usage=float(snapshot["hardware"]["memory"]["usage_mem"])
     disk_usage=float(snapshot["hardware"]["disk"]["usage"])
     cpu_usage=float(snapshot["process"]["cpu_usage"])
-    failed_login_ip=snapshot["security"]["frequent_login_error_ip"]
+    failed_login_user=snapshot["security"]["frequent_login_error_user"]
     active_ssh=snapshot["security"]["active_ssh"]
     
     #硬件检查"hardware"
@@ -29,12 +29,15 @@ def analyze_snapshot_risk(snapshot:dict):
     if cpu_usage>93:
         issues.append(f"CPU负载过高({cpu_usage})")
     #安全检查"security"
-    #frequent_login_error_ip
-    if list(failed_login_ip.values())[1]>20:
-        issues.append(f"当前存在高频登录失败ip({failed_login_ip[0]})")
+    #frequent_login_error_user
+    for user,count in failed_login_user.items():
+        if count>20:            
+            issues.append(f"当前存在疑似爆破登录攻击({user}),失败次数 {count}")
+        elif count>10:
+            issues.append(f"当前存在高频登录失败({user}),失败次数 {count}")
     #active_hsh
     if len(active_ssh) >=5:
-        issues.append(f"当前ssh已连接({active_ssh}个)")
+        issues.append(f"当前ssh已连接({len(active_ssh)}个)")
     
     intergrated_info={"level":None,
                       "details":issues}

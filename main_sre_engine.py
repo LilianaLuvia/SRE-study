@@ -1,5 +1,5 @@
 from sre_monitor_hub import get_system_snapshot
-from utils import alert_u
+from utils import alert
 import time
 from utils import get_time
 
@@ -8,8 +8,8 @@ def start_inspection_loop():
     try:
         while True:
             data=get_system_snapshot()
-            res=alert_u.analyze_snapshot_risk(data)
-            if alert_u.has_risk_changed(res.get("level")):
+            res=alert.analyze_snapshot_risk(data)
+            if alert.has_risk_changed(res.get("level")):
                 print({"timestamp":get_time(),
                         "details":res.get("details")})
                 print(data)

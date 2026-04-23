@@ -9,5 +9,6 @@ logs/
 
 #忽略crchiev文件夹
 archive/
+*.py
 
 test_main.py

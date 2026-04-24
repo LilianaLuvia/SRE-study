@@ -64,7 +64,39 @@ def get_active_ssh_session():
                           "remote_port":connect.raddr.port,
                           "status":connect.status})
     return total
+
+#方法: security风险量化
+def security_risk_quantification(auth_log_path=None):
+    #定义auth.log默认地址
+    if auth_log_path==None:
+        auth_log_path=os.path.join("/var","log","auth.log")
     
+    #获取数据 
+    frequent_login_error_user=ip_counter(parse_ssh_log(auth_log_path))
+    active_ssh=get_active_ssh_session()
+
+    #风险量化规则与分析
+    score=0
+    if frequent_login_error_user:
+        sum=0
+        for count in frequent_login_error_user.values():
+            sum+=count
+        if sum>20:
+            score+=100
+        elif sum>10:
+            score+=50
+    
+    if len(active_ssh)>5:
+        score+=100
+    
+    #返回分析结果
+    if score>=100:
+        return "CRITICAL"
+    elif score>=50:
+        return "WARNING"
+    else:
+        return "HEALTHY"
+
 if __name__=="__main__":
     ip_count=ip_counter(parse_ssh_log(auth_log_path))
     print(ip_count)

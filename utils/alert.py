@@ -3,11 +3,17 @@ last_level="HEALTHY"
 #方法: 状态变迁控制器
 def has_risk_changed(new_level):
     global last_level
-    if new_level==last_level:
-        return False
-    else:
+    
+    #状态发生改变
+    if new_level!=last_level:
         last_level=new_level
         return True
+    
+    #状态未发生改变
+    if new_level in ("CRITICAL", "WARNING"):
+        return True
+    
+    return False
 
 #方法: 对sre_monitor_hub.py数据聚合中心的数据进行统一状态分析(专用方法)
 def analyze_snapshot_risk(snapshot:dict):
@@ -28,6 +34,7 @@ def analyze_snapshot_risk(snapshot:dict):
     #进程检查"process"
     if cpu_usage>93:
         issues.append(f"CPU负载过高({cpu_usage})")
+        
     #安全检查"security"
     #frequent_login_error_user
     for user,count in failed_login_user.items():
@@ -35,12 +42,13 @@ def analyze_snapshot_risk(snapshot:dict):
             issues.append(f"当前存在疑似爆破登录攻击({user}),失败次数 {count}")
         elif count>10:
             issues.append(f"当前存在高频登录失败({user}),失败次数 {count}")
+            
     #active_hsh
     if len(active_ssh) >=5:
         issues.append(f"当前ssh已连接({len(active_ssh)}个)")
     
     intergrated_info={"level":None,
-                      "details":issues}
+                    "details":issues}
     
     #安全权重分析
     if len(issues)>2 or memory_usage>93 or cpu_usage>93:
@@ -52,6 +60,6 @@ def analyze_snapshot_risk(snapshot:dict):
     else:
         intergrated_info["level"]="HEALTHY"
         return intergrated_info
- 
+
 if __name__=="__main__":
     pass

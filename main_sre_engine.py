@@ -7,7 +7,10 @@ from utils import getTime
 def start_inspection_loop():
     try:
         while True:
+            #获取系统状态信息
             data=get_system_snapshot()
+            
+            #风险状态分析
             res=alert.analyze_snapshot_risk(data)
             if alert.has_risk_changed(res.get("level")):
                 print({"timestamp":getTime.now(),
@@ -17,6 +20,7 @@ def start_inspection_loop():
                 print({"timestamp":getTime.now(),
                     "details":"当前系统状态稳定"})
             time.sleep(10)
+            
     except KeyboardInterrupt:
         print("\n程序已手动结束")
     

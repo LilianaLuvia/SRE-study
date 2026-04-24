@@ -6,11 +6,13 @@ def get_system_snapshot(auth_log_path=None):
     if auth_log_path==None:
         auth_log_path=os.path.join("/var","log","auth.log")
     snapshot={
+        "timestamp":utils.getTime.now(),
         "hardware":{
             "memory":utils.memory.get_memory_info(),
             "disk":utils.disk.get_disk_usage_report()
         },
         "security":{
+            "status":utils.ip.security_risk_quantification(),
             "frequent_login_error_user":utils.ip.ip_counter(utils.ip.parse_ssh_log(auth_log_path)),
             "active_ssh":utils.ip.get_active_ssh_session()
         },

@@ -12,7 +12,7 @@ def connect_to_db():
             #连接对象
             try:
                 DB_CONN=pymysql.connect(
-                    host="db",
+                    host="127.0.0.1",
                     user="root",
                     password="Baiv32992211",
                     database="test_database"
@@ -29,6 +29,7 @@ def connect_to_db():
 def init_db_table():
     db_conn=connect_to_db()
     try:
+        #sql建表语句
         create_table_sql="""
         CREATE TABLE IF NOT EXISTS monitor_log(
             id INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键',
@@ -36,13 +37,14 @@ def init_db_table():
             mem_usage FLOAT COMMENT '运行内存使用率',
             disk_usage FLOAT COMMENT '磁盘空间使用率',
             cpu_usage FLOAT COMMENT 'CPU占用率',
-            status CHAR(10) COMMENT '系统状态'
+            security CHAR(10) COMMENT '网络安全状态'
         )
         """
         cursor=db_conn.cursor()
         cursor.execute(create_table_sql)
+        
+        #提交事务
         db_conn.commit()
-        print("表创建成功")
     except Exception as e:
         print(f"连接数据库或执行失败: {e}")
 
@@ -52,7 +54,7 @@ def save_static(time,mem,disk,cpu,level):
     try:
         db_conn=connect_to_db()
         save_static_sql="""
-        INSERT INTO monitor_log (report_time,mem_usage,disk_usage,cpu_usage,status) VALUES (%s,%s,%s,%s,%s)
+        INSERT INTO monitor_log (report_time,mem_usage,disk_usage,cpu_usage,security) VALUES (%s,%s,%s,%s,%s)
         """
         cursor=db_conn.cursor()
         cursor.execute(save_static_sql,(time,mem,disk,cpu,level))
@@ -60,7 +62,7 @@ def save_static(time,mem,disk,cpu,level):
     except Exception as e:
         print(f"连接数据库或传入失败: {e}")
         
-#方法: 提取snapshot表中的数据
+#方法: 提取snapshot表中的数据并写入数据库
 def extract_and_save(snapshot:dict):
     timestamp=snapshot["timestamp"]
     mem_usage=float(snapshot["hardware"]["memory"]["usage_mem"])

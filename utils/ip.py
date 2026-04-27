@@ -12,7 +12,7 @@ def parse_ssh_log(source):
     regex_pattern=r"]: FAILED SU \(to (?P<target_user>.*?)\) (?P<who>.*?) on"
     parse_result=[]
     
-   #内部方法: 统一不同输入源
+    #内部方法: 统一不同输入源
     def handle_stream(source):
         if isinstance(source,str):
             if os.path.exists(source):
@@ -61,8 +61,8 @@ def get_active_ssh_session():
     for connect in connection:
         if connect.status=="ESTABLISHED" and connect.raddr and connect.raddr.port==22:
             total.append({"remote_ip":connect.raddr.ip,
-                          "remote_port":connect.raddr.port,
-                          "status":connect.status})
+                        "remote_port":connect.raddr.port,
+                        "status":connect.status})
     return total
 
 #方法: security风险量化

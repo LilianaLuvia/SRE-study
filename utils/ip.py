@@ -34,7 +34,7 @@ def parse_ssh_log(source):
             yield match.groupdict()
 
 #方法: 统计各个尝试登录用户的出现次数,返回从大到小排序,传入count以指定传回前n项
-def ip_counter(parse_result:Iterable,count:int=5):
+def failed_login_user_counter(parse_result:Iterable,count:int=5):
     counter_ip=Counter(item["who"] for item in parse_result)
     return dict(counter_ip.most_common(count if count>0 else None))
 
@@ -72,7 +72,7 @@ def security_risk_quantification(auth_log_path=None):
         auth_log_path=os.path.join("/var","log","auth.log")
     
     #获取数据 
-    frequent_login_error_user=ip_counter(parse_ssh_log(auth_log_path))
+    frequent_login_error_user=failed_login_user_counter(parse_ssh_log(auth_log_path))
     active_ssh=get_active_ssh_session()
 
     #风险量化规则与分析
@@ -98,7 +98,7 @@ def security_risk_quantification(auth_log_path=None):
         return "HEALTHY"
 
 if __name__=="__main__":
-    ip_count=ip_counter(parse_ssh_log(auth_log_path))
+    ip_count=failed_login_user_counter(parse_ssh_log(auth_log_path))
     print(ip_count)
     print(generate_ascii_bar(ip_count))
     print(get_active_ssh_session())

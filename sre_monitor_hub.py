@@ -13,7 +13,7 @@ def get_system_snapshot(auth_log_path=None):
         },
         "security":{
             "status":utils.ip.security_risk_quantification(),
-            "frequent_login_error_user":utils.ip.ip_counter(utils.ip.parse_ssh_log(auth_log_path)),
+            "frequent_login_error_user":utils.ip.failed_login_user_counter(utils.ip.parse_ssh_log(auth_log_path)),
             "active_ssh":utils.ip.get_active_ssh_session()
         },
         "process":{

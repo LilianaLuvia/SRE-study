@@ -6,22 +6,24 @@ DB_CONN=None
 
 #方法: 连接数据库
 def connect_to_db():
+    count=0
     global DB_CONN
     if DB_CONN is None:
-        while True:
+        while DB_CONN is None:
             #连接对象
             try:
                 DB_CONN=pymysql.connect(
-                    host="127.0.0.1",
+                    host="db",
                     user="root",
                     password="Baiv32992211",
                     database="test_database"
                 )
-                if DB_CONN:
-                    break
+            except KeyboardInterrupt:
+                print("尝试连接已中断")
             except Exception:
-                print("[connect_to_db]: 重连尝试中...")
-                time.sleep(2)
+                count+=1
+                print(f"[connect_to_db]: 重连尝试中[{count}]...")
+                time.sleep(5)
     return DB_CONN
 
 

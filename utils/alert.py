@@ -37,10 +37,13 @@ def analyze_snapshot_risk(snapshot:dict):
         
     #安全检查"security"
     #frequent_login_error_user
+    login_count=0
     for user,count in failed_login_user.items():
-        if count>20:            
+        if count>10:            
             issues.append(f"当前存在疑似爆破登录攻击({user}),失败次数 {count}")
-        elif count>10:
+            if count>20:
+                login_count+=1
+        elif count>5:
             issues.append(f"当前存在高频登录失败({user}),失败次数 {count}")
             
     #active_hsh
@@ -51,7 +54,7 @@ def analyze_snapshot_risk(snapshot:dict):
                     "details":issues}
     
     #安全权重分析
-    if len(issues)>2 or memory_usage>93 or cpu_usage>93:
+    if len(issues)>2 or memory_usage>93 or cpu_usage>93 or login_count>=1:
         intergrated_info["level"]="CRITICAL"
         return intergrated_info
     elif len(issues)==1:

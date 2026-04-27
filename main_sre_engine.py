@@ -20,6 +20,7 @@ def start_inspection_loop():
             #逻辑判断
             if alert.has_risk_changed(res.get("level")):
                 print({"timestamp":getTime.now(),
+                        "status":res.get("level"),
                         "details":res.get("details")})
                 print(data)
             else:
@@ -27,7 +28,7 @@ def start_inspection_loop():
                     "details":"当前系统状态稳定"})
                 
             #信息上传数据库  
-            database.extract_and_save(data)
+            database.extract_and_save(data,res.get("level"))
             time.sleep(10)
             
     except KeyboardInterrupt:

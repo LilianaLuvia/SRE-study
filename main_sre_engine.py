@@ -6,6 +6,9 @@ from utils import database
 
 #方法: SRE 自动化巡检总线
 def start_inspection_loop():
+    #检查并创建monitor_log表
+    database.init_db_table()
+    
     try:
         while True:
             #获取系统状态信息
@@ -24,13 +27,15 @@ def start_inspection_loop():
                     "details":"当前系统状态稳定"})
                 
             #信息上传数据库  
-            database.init_db_table()
             database.extract_and_save(data)
-            database.close_db()
             time.sleep(10)
             
     except KeyboardInterrupt:
         print("\n程序已手动结束")
+        
+    finally:
+        #断开数据库连接
+        database.close_db()
     
 if __name__=="__main__":
     start_inspection_loop()

@@ -7,8 +7,9 @@ logs/
 *.log
 *.bak
 
-#忽略crchiev文件夹
+#忽略archive文件夹
 archive/
 *.py
 
+docker-compose.yml
 test_main.py

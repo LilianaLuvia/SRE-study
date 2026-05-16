@@ -1,13 +1,14 @@
 from sre_monitor_hub import get_system_snapshot
-from utils import alert
+from utils import alert,getTime,database,metrics
 import time
-from utils import getTime
-from utils import database
 
 #方法: SRE 自动化巡检总线
 def start_inspection_loop():
     #检查并创建monitor_log表
     database.init_db_table()
+    
+    #启动HTTP服务
+    metrics.start_prometheus_http()
     
     try:
         while True:
@@ -26,7 +27,10 @@ def start_inspection_loop():
             else:
                 print({"timestamp":getTime.now(),
                     "details":"当前系统状态稳定"})
-                
+            
+            #更新gauge指标
+            metrics.update_metric(data)
+            
             #信息上传数据库  
             database.extract_and_save(data,res.get("level"))
             time.sleep(10)

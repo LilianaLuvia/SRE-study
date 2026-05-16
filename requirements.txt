@@ -1,3 +1,4 @@
 psutil
 pymysql
 cryptography
+prometheus-client

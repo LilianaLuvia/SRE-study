@@ -8,8 +8,7 @@ logs/
 *.bak
 
 #忽略archive文件夹
-archive/
-*.py
+archive/*.py
 
 docker-compose.yml
 test_main.py

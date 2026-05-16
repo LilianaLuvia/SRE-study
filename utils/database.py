@@ -1,5 +1,4 @@
 import pymysql
-from utils import getTime
 import time
 
 DB_CONN=None 

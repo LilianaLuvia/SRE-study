@@ -71,7 +71,7 @@ def rotate_log(log_path,MAX_SIZE=50*1024):
                 result.update({
                     "success":True,
                     "status":f"日志已完成备份: {backup_log}",
-                    "backup_L\log":backup_log
+                    "backup_log":backup_log
                 })
                 return result
             else:
@@ -117,7 +117,7 @@ def follow_logs(log_path:str):
                 else:
                     time.sleep(0.5)
                     continue           
-          
+        
     except KeyboardInterrupt:
         return False
 

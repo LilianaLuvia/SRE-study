@@ -25,7 +25,5 @@ def get_memory_info():
         "total_mem":f"{total_mem/(1024**3):.2f}",
         "used_mem":f"{used_mem/(1024**3):.2f}",
         "usage_mem":f"{usage_mem}"
-    }
-        
-        
+    }    
 

@@ -1,7 +1,14 @@
 import pymysql
 import time
+import os
 
 DB_CONN=None 
+
+DB_HOST=os.environ.get("DB_HOST","127.0.0.1")
+DB_USER=os.environ.get("DB_USER","root")
+DB_PASSWORD=os.environ.get("DB_PASSWORD","Baiv32992211")
+DB_NAME=os.environ.get("DB_NAME","test_database")
+
 
 #方法: 连接数据库
 def connect_to_db():
@@ -12,10 +19,10 @@ def connect_to_db():
             #连接对象
             try:
                 DB_CONN=pymysql.connect(
-                    host="127.0.0.1",
-                    user="root",
-                    password="Baiv32992211",
-                    database="test_database"
+                    host=DB_HOST,
+                    user=DB_USER,
+                    password=DB_PASSWORD,
+                    database=DB_NAME
                 )
             except Exception:
                 count+=1

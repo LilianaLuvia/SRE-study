@@ -8,7 +8,7 @@ groups:
           severity: warning
         annotations:
           summary: "CPU使用率过高"
-          description: "当前CPU使用率为 {{$value}}% ,已超 85%阈值"
+          description: "当前CPU使用率为 {{ $value }}% ,已超 85%阈值"
 
       - alert: CriticalCPUUsage
         expr: avg_over_time(cpu_usage[1m])>95

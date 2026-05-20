@@ -1,0 +1,39 @@
+groups:
+  - name: sre_alert
+    rules:
+      - alert: HighCPUUsage
+        expr: avg_over_time(cpu_usage[2m])>85
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU使用率过高"
+          description: "当前CPU使用率为 {{$value}}% ,已超 85%阈值"
+
+      - alert: CriticalCPUUsage
+        expr: avg_over_time(cpu_usage[1m])>95
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "CPU使用率已满"
+          description: "CPU使用率已满 {{ $value }}%"
+        
+      - alert: HighDiskUsage
+        expr: avg_over_time(disk_usage[2m])>90
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "磁盘空间已满"
+          description: "当前磁盘空间使用率为 {{ $value }}%"
+      
+      - alert: SSHBruteForce
+        expr: ssh_failed_login_count>20
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "SSH登录失败计数超过20"
+          description: "当前计数 {{ $value }}"
+

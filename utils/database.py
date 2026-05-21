@@ -4,10 +4,10 @@ import os
 
 DB_CONN=None 
 
-DB_HOST=os.environ.get("DB_HOST","127.0.0.1")
-DB_USER=os.environ.get("DB_USER","root")
-DB_PASSWORD=os.environ.get("DB_PASSWORD","Baiv32992211")
-DB_NAME=os.environ.get("DB_NAME","test_database")
+DB_HOST=os.environ.get("DB_HOST","fallback_value")
+DB_USER=os.environ.get("DB_USER","fallback_value")
+DB_PASSWORD=os.environ.get("DB_PASSWORD","fallback_value")
+DB_NAME=os.environ.get("DB_NAME","fallback_value")
 
 
 #方法: 连接数据库

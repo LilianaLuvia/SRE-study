@@ -4,11 +4,11 @@ import time
 
 #方法: SRE 自动化巡检总线
 def start_inspection_loop():
+    #启动HTTP服务
+    metrics.start_prometheus_http()   
+    
     #检查并创建monitor_log表
     database.init_db_table()
-    
-    #启动HTTP服务
-    metrics.start_prometheus_http()
     
     try:
         while True:

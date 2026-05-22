@@ -1,0 +1,68 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sre-engine
+  namespace: sre-staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sre-engine
+  template:
+    metadata:
+      labels:
+        app: sre-engine
+    spec:
+      containers:
+        - name: sre-engine
+          image: sre-engine:latest
+          imagePullPolicy: Never
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "500m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: sre-app-configmap
+                  key: DB_HOST
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: DB_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: sre-app-configmap
+                  key: DB_NAME
+            - name: DB_USER
+              value: "root"
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 15
+
+---
+#Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: sre-engine
+  namespace: sre-staging
+spec:
+  type: ClusterIP
+  selector:
+    app: sre-engine
+  ports:
+    - port: 8000
+      targetPort: 8000

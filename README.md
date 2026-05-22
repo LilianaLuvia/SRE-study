@@ -1,48 +1,158 @@
-# SRE-STUDY 系统安全与性能审计自动化
-## 项目简介
-  本项目暂时主要基于Python3 开发的SRE自动化监控方案。目前主要实现了底层日志流实时监听、内存和磁盘指标采集、安全风险自动化分析。
-  目前项目状态:【Developping】
+# SRE-STUDY — 从零开始的 SRE + AIOps 实战平台
 
-## 核心架构
-  该项目主要采用事件驱动 (Event-Driven) 与 流式处理 (Streaming)，主要包含以下核心功能: 
-1. 实时日志审计
-    * 流式监听: 模拟```tail -f```,控制文件指针偏移，实现对日志的增量读取
-    * 正则结构化: 利用正则表达式命名组 (?P\<name>) ,将SSH登录日志解析为结构化数据
+> 一个从零搭建的 SRE 学习项目，涵盖监控采集、可视化、告警体系、容器化部署、Kubernetes 编排全链路。
+>
+> 状态：**阶段 1-3 完成 ✅** | 阶段 4（AIOps）进行中 🚧
 
-2. 多维指标监控
-    * 内存画像: 实时采集系统可用内存、使用率及状态
-    * 磁盘审计: 支持指定挂载点的空间分析，包括总量、已用、剩余及百分比监控。
-    * 硬件预警: 内置阈值判定逻辑，自动识别 HEALTHY、WARNING 或 DANGER 状态。
+---
 
-3. 安全分析引擎
-    * 攻击画像: 利用 collections.Counter 实时更新高频登录错误 IP 账本
-    * 风险评估: 内置智能评估逻辑，根据频率自动判定风险等级（NORMAL / WARNING / CRITICAL）
-    * 防抖机制: 实现时间窗口控制，防止在高频事件触发下造成的系统 IO 过载
+## 🏗️ 架构总览
 
-4. 自动化报告
-    * 动态报表: 可自动生成 Markdown 格式的系统审计报告
-    * 可视化渲染: 将复杂数据转化为 ASCII 柱状图及状态指示器
-
-## 项目结构(暂时最主要的模块)
 ```
-.
-└── SRE-STUDY
-    ├── utils
-    │   ├── alert_utils.py
-    │   ├── disk_utils.py
-    │   ├── ip_utils.py
-    │   ├── json_utils.py
-    │   ├── log_utils.py
-    │   ├── memory_utils.py
-    │   ├── process_utils.py
-    │   └── sys_utils.py
-    ├── sre_live_tailer.py
-    ├── sre_cron_manager.py
-    ├── sre_monitor_pro.py
-    ├── sre_report_generator.py
-    ├── sre_monitor_hub.py
-    └── main_sre_engine.py
+                        ┌─────────────────────────────────────┐
+                        │           Kubernetes (Minikube)      │
+                        │  ┌──────────┐  ┌──────────────────┐ │
+                        │  │  MySQL   │  │   sre-engine     │ │
+                        │  │ Stateful │◀─│   Deployment     │ │
+                        │  │   Set    │  │   (CPU/Mem/Disk  │ │
+                        │  │  :3306   │  │    SSH 监控)     │ │
+                        │  └──────────┘  └────────┬─────────┘ │
+                        │                         │ :8000     │
+                        └─────────────────────────┼───────────┘
+                                                  │
+    ┌─────────────────────────────────────────────┼───────────┐
+    │                Docker Compose (开发环境)      │           │
+    │  ┌──────────┐ ┌──────────┐ ┌──────────────┐ │           │
+    │  │Alertmgmt │ │Prometheus│ │  sre_app     │◀┤           │
+    │  │  :9093   │◀│  :9090   │◀│  :8000       │ │           │
+    │  └──────────┘ └────┬─────┘ └──────────────┘ │           │
+    │                    │                         │           │
+    │  ┌─────────────────▼──┐   ┌──────────────┐  │           │
+    │  │     Grafana        │   │    MySQL      │  │           │
+    │  │     :3000          │   │    :3307      │  │           │
+    │  └────────────────────┘   └──────────────┘  │           │
+    └─────────────────────────────────────────────┘           │
 ```
 
 ---
-本项目遵循常规提交规范 (Conventional Commits)，确保工程化开发的可追溯性
+
+## 🚀 快速启动
+
+### 方式一：Docker Compose（开发/演示）
+
+```bash
+cp .env.example .env          # 编辑 .env 填入密码
+docker compose up -d          # 启动全部 6 个服务
+curl localhost:8000/metrics   # 验证指标端点
+```
+
+| 服务 | 地址 | 用途 |
+|------|------|------|
+| sre_app | `http://localhost:8000/metrics` | 指标暴露 |
+| Prometheus | `http://localhost:9090` | 指标采集 + 告警规则 |
+| Grafana | `http://localhost:3000` | 可视化仪表板 |
+| Alertmanager | `http://localhost:9093` | 告警管理 |
+| MySQL | `localhost:3307` | 历史数据持久化 |
+
+### 方式二：Kubernetes（生产级部署）
+
+```bash
+minikube start --driver=docker
+eval $(minikube docker-env)
+docker build -t sre-engine:latest .
+kubectl apply -f k8s/
+kubectl port-forward -n sre-staging svc/sre-engine 8000:8000
+```
+
+---
+
+## 📊 采集指标
+
+| 指标名 | 类型 | 说明 |
+|--------|------|------|
+| `cpu_usage` | Gauge | CPU 使用率 % |
+| `memory_usage` | Gauge | 内存使用率 % |
+| `disk_usage` | Gauge | 磁盘使用率 % |
+| `ssh_active_sessions` | Gauge | SSH 活跃连接数 |
+| `ssh_failed_login_count` | Gauge | 登录失败总次数 |
+
+---
+
+## 🔔 告警规则
+
+| 告警 | 条件 | 严重度 |
+|------|------|--------|
+| HighCPUUsage | `avg_over_time(cpu_usage[2m]) > 85` | warning |
+| CriticalCPUUsage | `avg_over_time(cpu_usage[1m]) > 95` | critical |
+| HighDiskUsage | `avg_over_time(disk_usage[2m]) > 90` | warning |
+| SSHBruteForce | `ssh_failed_login_count > 20` | critical |
+
+所有规则定义在 [`alert_rules.yml`](alert_rules.yml)，支持双层防抖（`avg_over_time` + `for` 持续时间）。
+
+---
+
+## 📁 项目结构
+
+```
+SRE-STUDY/
+├── main_sre_engine.py          # 主巡检总线
+├── sre_monitor_hub.py          # 数据聚合中心
+├── utils/                      # 功能模块
+│   ├── process.py              # CPU / 进程采集
+│   ├── memory.py               # 内存采集
+│   ├── disk.py                 # 磁盘采集
+│   ├── ip.py                   # SSH 日志解析 + 安全量化
+│   ├── alert.py                # 风险判定引擎
+│   ├── database.py             # MySQL 持久化
+│   ├── metrics.py              # Prometheus 指标暴露
+│   ├── remedy.py               # 修复建议生成
+│   ├── log.py                  # 日志管理
+│   ├── json.py                 # 历史数据 JSON 存储
+│   ├── system.py               # 系统信息解析
+│   └── getTime.py              # 时间工具
+├── k8s/                        # Kubernetes 部署清单
+│   ├── namespace.yml           # sre-staging 命名空间
+│   ├── mysql.yml               # MySQL StatefulSet + Service
+│   ├── mysql-secret.yml        # 数据库密码 Secret
+│   ├── sre-app.yml             # 引擎 Deployment + Service
+│   └── sre-app-configmap.yml   # 非敏感配置
+├── prometheus.yml              # Prometheus 抓取配置
+├── alert_rules.yml             # Prometheus 告警规则
+├── docker-compose.yml          # 本地开发栈
+├── Dockerfile                  # 应用镜像
+├── requirements.txt            # Python 依赖
+├── STUDY_PLAN.md               # 12 周学习路线图
+└── archive/                    # 历史版本代码
+```
+
+---
+
+## 🛠️ 技术栈
+
+| 层 | 技术 |
+|----|------|
+| 语言 | Python 3.13 |
+| 监控 | Prometheus + Grafana |
+| 告警 | Alertmanager |
+| 数据库 | MySQL 8.4 |
+| 容器化 | Docker + Docker Compose |
+| 编排 | Kubernetes (Minikube) |
+| 依赖 | psutil, pymysql, prometheus-client, cryptography |
+
+---
+
+## 🎯 学习路线
+
+本项目遵循 [SRE + AIOps 从零开始完整学习清单](./SRE%20%2B%20AIOps%20从零开始完整学习清单（140项）.md)，详见 [STUDY_PLAN.md](./STUDY_PLAN.md)。
+
+- [x] **阶段 1**：Linux / Python / 网络基础
+- [x] **阶段 2**：Prometheus + Grafana + Alertmanager 监控体系
+- [x] **阶段 3**：Docker Compose → Kubernetes 部署迁移
+- [ ] **阶段 4**：AIOps 算法（异常检测 / 告警降噪 / 根因分析）
+- [ ] **阶段 5**：SRE 文化（SLI/SLO / 复盘 / Toil 自动化）
+
+---
+
+## 📜 License
+
+MIT — 学习自由，代码自由。

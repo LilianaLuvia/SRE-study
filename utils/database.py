@@ -27,7 +27,7 @@ def connect_to_db():
             except Exception as e:
                 count+=1
                 print(f"[connect_to_db]: 重连尝试中[{count}]... ({e})")
-                time.sleep(5)
+                time.sleep(3)
     return DB_CONN
 
 

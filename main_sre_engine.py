@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 from sre_monitor_hub import get_system_snapshot
 from utils import alert,getTime,database,metrics
 import time

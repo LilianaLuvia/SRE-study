@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+from sklearn.ensemble import IsolationForest
+from typing import Optional
 
 # 3-sigma 动态阈值异常检测
 class ThreeSigmaDetector:
@@ -77,3 +79,32 @@ class IQRDetector:
         print(f"下界: {self.q1:.4f}, 上界: {self.q3:.4f}")
         print(f"正常范围: [{self.lower:.4f}, {self.upper:.4f}]")
         print(f"异常点数: {abnormity.sum()} ({abnormity.mean()*100:.2f}%)")
+
+# 孤立森林(Isolation Forest)
+class IsolationForestDetector:
+    def __init__(self, df, columns=['cpu_usage', 'mem_usage', 'disk_usage'],contamination=0.05):
+        self.data = df[columns]
+        self.columns = columns
+        self.contamination = contamination
+        self.model=None
+        self.labels=None
+        self.scores=None
+    
+    def fit(self):
+        self.model = IsolationForest(
+            contamination=self.contamination,
+            random_state=42
+        )
+        self.labels = self.model.fit_predict(self.data)
+        # 转换为分数
+        self.scores = self.model.decision_function(self.data)
+        return self
+    
+    def get_anomalies(self):
+        return self.data[self.labels == -1]
+    
+    def summary(self):
+        n_anomalies = (self.labels == -1).sum()
+        print(f"总点数: {len(self.data)}")
+        print(f"异常点数: {n_anomalies} ({n_anomalies/len(self.data)*100:.2f}%)")
+        print(f"异常分数范围: [{self.scores.min():.4f}, {self.scores.max():.4f}]") # type:ignore

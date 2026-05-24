@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 # 3-sigma 动态阈值异常检测
 class ThreeSigmaDetector:
@@ -34,5 +35,45 @@ class ThreeSigmaDetector:
         abnormity=self.detect()
         print(f"总点数: {len(self.data)}")
         print(f"均值: {self.mean:.4f}, 标准差: {self.std:.4f}")
+        print(f"正常范围: [{self.lower:.4f}, {self.upper:.4f}]")
+        print(f"异常点数: {abnormity.sum()} ({abnormity.mean()*100:.2f}%)")
+        
+# IQR箱线图
+class IQRDetector:
+    def __init__(self,df,column,k:float=1.5) -> None:
+        if isinstance(df,pd.DataFrame):
+            self.data=df[column]
+        else:
+            self.data=df
+        self.column=column
+        self.k=k
+        self.q1=None
+        self.q3=None
+        self.iqr=None
+        self.upper=None
+        self.lower=None
+    
+    # 计算均值、标准差、上界、下界   
+    def fit(self):
+        self.q1=np.percentile(self.data,25)
+        self.q3=np.percentile(self.data,75)
+        self.iqr=self.q3-self.q1
+        self.upper=self.q3+self.k*self.iqr
+        self.lower=max(0,self.q1-self.k*self.iqr)
+        return self
+    
+    # 返回一个布尔 Series,每个点是否为异常(True = 异常)   
+    def detect(self):
+        return (self.data>self.upper) | (self.data<self.lower)
+    
+    # 返回只包含异常点的 DataFrame
+    def get_anomalies(self):
+        return self.data[self.detect()]
+    
+    # 打印: 总点数、异常点数、异常率、上下界
+    def summary(self):
+        abnormity=self.detect()
+        print(f"总点数: {len(self.data)}")
+        print(f"下界: {self.q1:.4f}, 上界: {self.q3:.4f}")
         print(f"正常范围: [{self.lower:.4f}, {self.upper:.4f}]")
         print(f"异常点数: {abnormity.sum()} ({abnormity.mean()*100:.2f}%)")

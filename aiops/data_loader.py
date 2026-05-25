@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
-load_dotenv()
+load_dotenv('.env.local')
+load_dotenv('.env')
 import pandas as pd
 from utils.database import connect_to_db,close_db
 

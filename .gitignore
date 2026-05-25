@@ -17,3 +17,4 @@ STUDY_PLAN.md
 minikube-linux-amd64
 mysql-secret.yml
 .vscode/
+.env.local

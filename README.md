@@ -133,6 +133,7 @@ SRE-STUDY/
 ├── Dockerfile                  # 应用镜像
 ├── requirements.txt            # Python 依赖
 ├── STUDY_PLAN.md               # 12 周学习路线图
+├── LICENSE                     # MIT License
 └── archive/                    # 历史版本代码
 ```
 

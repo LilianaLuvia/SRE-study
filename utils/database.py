@@ -30,10 +30,17 @@ def connect_to_db():
                 time.sleep(3)
     return DB_CONN
 
+# 方法: 检查并创建数据库
+def init_db():
+    global DB_HOST,DB_USER,DB_NAME,DB_PASSWORD
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD)
+    cursor=conn.cursor()
+    # 检查数据库是否存在
+    cursor.execute(f"CREATE DATABASE IF NOT EXISTS {DB_NAME};")
+    conn.close()
 
 #方法: 检查并创建表
 def init_db_table():
-    db_conn=connect_to_db()
     try:
         #sql建表语句
         create_table_sql="""
@@ -45,8 +52,9 @@ def init_db_table():
             cpu_usage FLOAT COMMENT 'CPU占用率',
             security CHAR(10) COMMENT '网络安全状态',
             status CHAR(10) COMMENT '综合状态'
-        )
+        );
         """
+        db_conn=connect_to_db()
         cursor=db_conn.cursor()
         cursor.execute(create_table_sql)
         

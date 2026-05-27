@@ -9,6 +9,9 @@ def start_inspection_loop():
     #启动HTTP服务
     metrics.start_prometheus_http()   
     
+    # 检查并创建数据库
+    database.init_db()
+    
     #检查并创建monitor_log表
     database.init_db_table()
     

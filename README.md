@@ -2,7 +2,7 @@
 
 > 一个从零搭建的 SRE 学习项目，涵盖监控采集、可视化、告警体系、容器化部署、Kubernetes 编排全链路。
 >
-> 状态：**阶段 1-3 完成 ✅** | 阶段 4（AIOps）进行中 🚧
+> 状态：**全部 5 阶段完成 ✅** | 持续迭代中
 
 ---
 
@@ -110,15 +110,26 @@ SRE-STUDY/
 │   ├── json.py                 # 历史数据 JSON 存储
 │   ├── system.py               # 系统信息解析
 │   └── getTime.py              # 时间工具
+├── aiops/                      # AIOps 智能分析模块
+│   ├── data_loader.py          # 数据加载与预处理
+│   ├── anomaly_detector.py     # 3 种异常检测算法
+│   │   ├── ThreeSigmaDetector  #   3-Sigma 动态阈值
+│   │   ├── IQRDetector         #   IQR 箱线图（抗极端值）
+│   │   └── IsolationForestDetector  # 孤立森林（多维）
+│   └── report.py               # 异常检测对比报告生成
 ├── k8s/                        # Kubernetes 部署清单
 │   ├── namespace.yml           # sre-staging 命名空间
 │   ├── mysql.yml               # MySQL StatefulSet + Service
 │   ├── mysql-secret.yml        # 数据库密码 Secret
 │   ├── sre-app.yml             # 引擎 Deployment + Service
 │   └── sre-app-configmap.yml   # 非敏感配置
+├── docx/                       # SRE 方法论文档
+│   ├── SLI_SLO.md              # SLI / SLO / 错误预算定义
+│   ├── postmotem_template.md   # 无指责故障复盘模板
+│   └── Toil.md                 # Toil 识别与自动化计划
 ├── prometheus.yml              # Prometheus 抓取配置
 ├── alert_rules.yml             # Prometheus 告警规则
-├── docker-compose.yml          # 本地开发栈
+├── docker-compose.yml          # 本地开发栈（6 服务）
 ├── Dockerfile                  # 应用镜像
 ├── requirements.txt            # Python 依赖
 ├── STUDY_PLAN.md               # 12 周学习路线图
@@ -134,10 +145,12 @@ SRE-STUDY/
 | 语言 | Python 3.13 |
 | 监控 | Prometheus + Grafana |
 | 告警 | Alertmanager |
+| AIOps | 3-Sigma / IQR / Isolation Forest |
+| 数据处理 | pandas / numpy / matplotlib |
+| 机器学习 | scikit-learn |
 | 数据库 | MySQL 8.4 |
 | 容器化 | Docker + Docker Compose |
 | 编排 | Kubernetes (Minikube) |
-| 依赖 | psutil, pymysql, prometheus-client, cryptography |
 
 ---
 
@@ -148,8 +161,8 @@ SRE-STUDY/
 - [x] **阶段 1**：Linux / Python / 网络基础
 - [x] **阶段 2**：Prometheus + Grafana + Alertmanager 监控体系
 - [x] **阶段 3**：Docker Compose → Kubernetes 部署迁移
-- [ ] **阶段 4**：AIOps 算法（异常检测 / 告警降噪 / 根因分析）
-- [ ] **阶段 5**：SRE 文化（SLI/SLO / 复盘 / Toil 自动化）
+- [x] **阶段 4**：AIOps 算法（3-Sigma / IQR / Isolation Forest）
+- [x] **阶段 5**：SRE 文化（SLI/SLO / 无指责复盘 / Toil 自动化）
 
 ---
 
